@@ -1,0 +1,32 @@
+@use "styles/mixins";
+@use "styles/variables";
+
+.header{
+  width: 100%;
+  background-color: variables.$back-color-second;
+  padding-block: variables.$spacing-12;
+  border-bottom: 2px solid
+    color-mix(
+      in srgb,
+      variables.$secondary-color,
+      variables.$back-color-second 80%
+    );
+
+  &__container {
+    @include mixins.container() {
+      display: grid;
+      grid-template-columns: 2fr 12fr 1fr;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  &__navigation {
+    justify-content: center;
+  }
+  &__icons {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: variables.$spacing-12;
+  }
+}

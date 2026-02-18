@@ -1,0 +1,55 @@
+@use "styles/variables";
+
+.input {
+  &__wrapper {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-8;
+    padding-inline: variables.$spacing-16;
+    outline: none;
+    background-color: variables.$back-color-second;
+    border-radius: variables.$border-radius;
+    border: 1px solid variables.$back-color-second;
+    transition:
+      box-shadow 0.2s,
+      border 0.2s;
+
+    @media (hover: hover) {
+      &:hover:not(:has(input:disabled)) {
+        box-shadow: variables.$shadow;
+      }
+    }
+    &:focus-within {
+      border: 1px solid variables.$accent-color;
+      box-shadow: variables.$shadow;
+    }
+    &:has(input:disabled) {
+      background-color: variables.$disabled-color;
+      border-color: variables.$disabled-color;
+      cursor: not-allowed;
+    }
+  }
+
+  &__field {
+    padding-block: variables.$spacing-12;
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    color: variables.$primary-color;
+    background-color: transparent;
+
+    &::placeholder {
+      color: variables.$secondary-color;
+    }
+    &:disabled {
+      color: variables.$secondary-color;
+      cursor: not-allowed;
+    }
+  }
+
+  &__field:disabled ~ &__afterSlot {
+    opacity: .5;
+  }
+}

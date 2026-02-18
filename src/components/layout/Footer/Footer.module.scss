@@ -1,0 +1,41 @@
+@use "styles/variables";
+@use "styles/mixins";
+
+.footer {
+  margin-top: 20px;
+  background-color: variables.$back-color-second;
+  padding-block: variables.$spacing-20;
+  border-top: 2px solid
+    color-mix(
+      in srgb,
+      variables.$secondary-color,
+      variables.$back-color-second 80%
+    );
+
+  &__container {
+    @include mixins.container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      @media screen and (width <= variables.$breakpoint-m) {
+        flex-direction: column;
+        gap: variables.$spacing-40;
+      }
+    }
+  }
+  &__navigate {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-12;
+
+    @media screen and (width <= variables.$breakpoint-m) {
+      align-items: center;
+      gap: variables.$spacing-4;
+
+      & > a{
+        padding: variables.$spacing-8;
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@use "styles/variables";
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: variables.$spacing-24;
+}

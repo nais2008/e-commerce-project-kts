@@ -1,0 +1,27 @@
+@use "./variables";
+
+@mixin container($margin-block: 0) {
+  max-width: 1240px;
+  margin: $margin-block auto;
+  @content;
+
+  @media screen and (width < variables.$breakpoint-xl) {
+    padding-inline: variables.$spacing-20;
+  }
+}
+
+@mixin gridContainer() {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 350px);
+  justify-content: space-between;
+  gap: 80px 10px;
+  width: 100%;
+
+  @media screen and (width <= variables.$breakpoint-xl) {
+    & {
+      justify-content: center;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: variables.$spacing-20;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+import React from "react"
+import { Link } from "react-router"
+
+import { ROUTES } from "constants/routes"
+import { ArrowLeft } from "lucide-react"
+
+import Heading from "components/ui/Heading"
+
+import styles from "./NotFound.module.scss"
+import Layout from "components/layout/Layout"
+
+const NotFound: React.FC = () => {
+  return (
+    <Layout>
+      <div className={styles.notFound}>
+        <Heading tag="h1" view="title" className={styles.notFound__title}>
+          404 :(
+        </Heading>
+        <Heading view="subtitle">
+          This page doesn`t exist. Or maybe it moved.
+        </Heading>
+        <Link to={ROUTES.main.create()} className={styles.notFound__link}>
+          <ArrowLeft size={20} /> Back to home
+        </Link>
+      </div>
+    </Layout>
+  )
+}
+
+export default NotFound
