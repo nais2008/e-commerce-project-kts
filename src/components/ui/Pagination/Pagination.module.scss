@@ -1,0 +1,19 @@
+@use "styles/variables";
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: variables.$spacing-12;
+
+  &__active {
+    background-color: variables.$accent-color;
+    color: variables.$white;
+    padding: calc(#{variables.$spacing-8} - 2px) variables.$spacing-12;
+    border-radius: variables.$border-radius;
+  }
+  &__btn {
+    padding: variables.$spacing-8;
+    padding-bottom: calc(#{variables.$spacing-4} - 2px);
+  }
+}

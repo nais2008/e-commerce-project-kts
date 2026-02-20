@@ -1,7 +1,7 @@
 export const ENDPOINTS = {
   product: {
     list: () => "/products",
-    byId: (id: number) => `/products/${id}`,
+    byId: (id: string) => `/products/${id}`,
   },
   categorized: {
     list: () => "product-categories",
@@ -10,5 +10,5 @@ export const ENDPOINTS = {
   auth: {
     login: () => "/auth/local",
     register: () => "/auth/local/register",
-  }
+  },
 }

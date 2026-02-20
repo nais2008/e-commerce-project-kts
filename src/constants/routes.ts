@@ -9,7 +9,7 @@ export const ROUTES = {
   },
   product: {
     mask: "/products/:id",
-    create: (id: number) => `/products/${id}`,
+    create: (id: string) => `/products/${id}`,
   },
   categories: {
     mask: "/categories",

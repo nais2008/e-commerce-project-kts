@@ -50,6 +50,6 @@
   }
 
   &__field:disabled ~ &__afterSlot {
-    opacity: .5;
+    opacity: 0.5;
   }
 }

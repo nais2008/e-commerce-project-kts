@@ -1,0 +1,12 @@
+@use "styles/mixins";
+@use "styles/variables";
+
+.productsList {
+  &__container {
+    @include mixins.container(100px) {
+      display: flex;
+      flex-direction: column;
+      gap: variables.$spacing-40;
+    }
+  }
+}

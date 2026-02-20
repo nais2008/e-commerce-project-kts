@@ -4,10 +4,10 @@ import { Link } from "react-router"
 import { ROUTES } from "constants/routes"
 import { ArrowLeft } from "lucide-react"
 
+import Layout from "components/layout/Layout"
 import Heading from "components/ui/Heading"
 
 import styles from "./NotFound.module.scss"
-import Layout from "components/layout/Layout"
 
 const NotFound: React.FC = () => {
   return (

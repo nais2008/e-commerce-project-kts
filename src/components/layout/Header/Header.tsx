@@ -12,10 +12,10 @@ const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.header__container}>
-        <Logo withTitle />
+        <Logo withTitle className={styles.header__logo} />
         <Menu className={styles.header__navigation} items={HEADER_ITEMS} />
         <div className={styles.header__icons}>
-          <Handbag size={30}/>
+          <Handbag size={30} />
           <UserRound size={30} />
         </div>
       </div>

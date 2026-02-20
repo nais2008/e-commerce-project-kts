@@ -13,6 +13,11 @@
   cursor: pointer;
   transition: background 0.2s;
   border-radius: variables.$border-radius;
+
+  div {
+    border-color: variables.$white;
+    border-right-color: transparent;
+  }
   @media (hover: hover) {
     &:not(&:disabled):hover {
       background: variables.$accent-color-light;

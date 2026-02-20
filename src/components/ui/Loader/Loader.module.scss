@@ -1,0 +1,26 @@
+@use "styles/animation";
+@use "styles/variables";
+
+.loader {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border: 5px solid variables.$accent-color;
+  border-right: 5px solid transparent;
+
+  animation: rotate-anim 5s linear infinite;
+}
+
+.loader_m {
+  width: 32px;
+  height: 32px;
+  border: 4px solid variables.$accent-color;
+  border-right: 4px solid transparent;
+}
+
+.loader_s {
+  width: 16px;
+  height: 16px;
+  border: 2px solid variables.$accent-color;
+  border-right: 2px solid transparent;
+}

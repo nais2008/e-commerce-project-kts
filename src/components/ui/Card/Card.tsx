@@ -60,7 +60,7 @@ const Card: React.FC<CardProps> = ({
             className={styles.card__subtitle}
             view="paragraph"
             color="secondary"
-            maxLines={3}
+            maxLines={2}
           >
             {subtitle}
           </Heading>

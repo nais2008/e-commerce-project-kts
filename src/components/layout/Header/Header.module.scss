@@ -1,7 +1,7 @@
 @use "styles/mixins";
 @use "styles/variables";
 
-.header{
+.header {
   width: 100%;
   background-color: variables.$back-color-second;
   padding-block: variables.$spacing-12;
@@ -18,6 +18,13 @@
       grid-template-columns: 2fr 12fr 1fr;
       align-items: center;
       justify-content: space-between;
+    }
+  }
+  @media screen and (width < variables.$breakpoint-s) {
+    &__logo {
+      *:not(img) {
+        display: none;
+      }
     }
   }
   &__navigation {

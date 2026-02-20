@@ -9,6 +9,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --skeleton-base-color: #{variables.$disabled-color} !important;
+  --skeleton-highlight-color: #{variables.$secondary-color} !important;
 }
 
 * {
@@ -16,7 +19,7 @@
   margin: 0;
   box-sizing: border-box;
 
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   line-height: 1.5;
 }
 
