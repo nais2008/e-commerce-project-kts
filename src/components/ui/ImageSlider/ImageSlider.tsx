@@ -70,7 +70,6 @@ const ImageSlider: React.FC<Props> = ({ images }) => {
         <ChevronRight size={30} />
       </button>
     </Swiper>
-
   )
 }
 

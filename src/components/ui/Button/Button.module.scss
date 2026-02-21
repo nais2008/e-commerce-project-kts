@@ -44,7 +44,7 @@
   &:disabled {
     background: variables.$disabled-color;
     color: variables.$secondary-color;
-    cursor:not-allowed;
+    cursor: not-allowed;
     border-color: transparent;
   }
 }

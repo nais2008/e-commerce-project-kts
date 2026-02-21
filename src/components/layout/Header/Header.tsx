@@ -4,10 +4,10 @@ import { Handbag, UserRound } from "lucide-react"
 
 import Logo from "components/ui/Logo"
 import Menu from "components/ui/Menu"
+import ThemeSwitcher from "components/ui/ThemeSwitcher"
 
 import styles from "./Header.module.scss"
 import { HEADER_ITEMS } from "./header.data"
-import ThemeSwitcher from "components/ui/ThemeSwitcher"
 
 const Header: React.FC = () => {
   return (

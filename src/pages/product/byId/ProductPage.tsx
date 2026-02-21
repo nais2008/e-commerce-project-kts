@@ -5,17 +5,17 @@ import { useQuery } from "@tanstack/react-query"
 import { isAxiosError } from "axios"
 import classNames from "classnames"
 import { ROUTES } from "constants/routes"
+import { ChevronLeft } from "lucide-react"
 import { getProductById } from "services/products"
 
 import ErrorMessage from "components/layout/ErrorMessage"
+import Button from "components/ui/Button"
+import Heading from "components/ui/Heading"
 import ImageSlider from "components/ui/ImageSlider"
 import { ProductDetailSkeleton } from "components/ui/Skeletons"
 
 import styles from "./ProductPage.module.scss"
 import InfoProduct from "./components/InfoProduct"
-import Button from "components/ui/Button"
-import { ChevronLeft } from "lucide-react"
-import Heading from "components/ui/Heading"
 import List from "./components/List"
 
 const ProductPage: React.FC = () => {
@@ -65,8 +65,8 @@ const ProductPage: React.FC = () => {
         to="#"
         className={styles.product__linkPrev}
         onClick={(e) => {
-          e.preventDefault();
-          navigate(-1);
+          e.preventDefault()
+          navigate(-1)
         }}
       >
         <ChevronLeft size={32} />

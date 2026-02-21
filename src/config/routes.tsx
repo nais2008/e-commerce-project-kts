@@ -1,6 +1,7 @@
 import type { RouteObject } from "react-router"
 
 import { ROUTES } from "constants/routes"
+import HeadProvider from "providers/HeadProvider"
 
 import IndexPage from "pages/index"
 import NotFound from "pages/not-found"
@@ -8,7 +9,6 @@ import ProductPage from "pages/product/byId"
 import ProductsListPage from "pages/product/list"
 
 import App from "../App"
-import HeadProvider from "providers/HeadProvider"
 
 export const routesConfig: RouteObject[] = [
   {
@@ -31,6 +31,10 @@ export const routesConfig: RouteObject[] = [
   },
   {
     path: "*",
-    element: <HeadProvider><NotFound /></HeadProvider>,
+    element: (
+      <HeadProvider>
+        <NotFound />
+      </HeadProvider>
+    ),
   },
 ]

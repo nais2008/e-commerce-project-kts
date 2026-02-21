@@ -10,12 +10,12 @@ import { getProducts } from "services/products"
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Card from "components/ui/Card"
+import DiscountPrice from "components/ui/DiscountPrice"
 import Heading from "components/ui/Heading"
 import Pagination from "components/ui/Pagination"
 import { CardSkeleton } from "components/ui/Skeletons"
 
 import styles from "./List.module.scss"
-import DiscountPrice from "components/ui/DiscountPrice"
 
 const List: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()

@@ -13,7 +13,7 @@ main:has(.product .retryButton) {
       display: flex;
       flex-direction: column;
       gap: variables.$spacing-24;
-    };
+    }
   }
   &__info {
     position: relative;
