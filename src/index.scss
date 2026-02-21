@@ -9,9 +9,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  --skeleton-base-color: #{variables.$disabled-color} !important;
-  --skeleton-highlight-color: #{variables.$secondary-color} !important;
+.react-loading-skeleton {
+  --base-color: #{variables.$disabled-color};
+  --highlight-color: #{variables.$secondary-color};
 }
 
 * {
@@ -29,6 +31,7 @@ a {
 }
 
 html {
+  scroll-behavior: smooth;
   scrollbar-gutter: stable;
 }
 

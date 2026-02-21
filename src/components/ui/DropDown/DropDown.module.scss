@@ -1,0 +1,50 @@
+@use "styles/variables";
+
+.dropDown {
+  height: 100%;
+  position: relative;
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    padding: variables.$spacing-8 variables.$spacing-12;
+    background: variables.$back-color;
+    border-radius: variables.$border-radius;
+    height: 100%;
+  }
+  &__options {
+    position: absolute;
+    top: calc(100% + 10px);
+    width: clamp(200px, 100%, 100%);
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background: variables.$back-color-second;
+    border-radius: variables.$border-radius;
+    border: 1px solid variables.$back-color;
+    z-index: 10;
+    overflow: hidden;
+    box-shadow: variables.$shadow;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s;
+
+    &_open {
+      opacity: 100%;
+      pointer-events: all;
+    }
+  }
+  &__option {
+    padding: variables.$spacing-8 variables.$spacing-16;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+
+    &:hover {
+      background: variables.$back-color;
+    }
+  }
+}

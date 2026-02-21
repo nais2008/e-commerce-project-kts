@@ -8,26 +8,43 @@
   gap: variables.$spacing-8;
   padding: variables.$spacing-16 variables.$spacing-20;
   color: #fff;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.2s,
+    border 0.2s,
+    color 0.2s;
   border-radius: variables.$border-radius;
 
   div {
     border-color: variables.$white;
     border-right-color: transparent;
   }
+
+  &_primary {
+    background-color: variables.$back-color-second;
+    border-color: variables.$primary-color;
+    color: variables.$primary-color;
+  }
+
   @media (hover: hover) {
     &:not(&:disabled):hover {
       background: variables.$accent-color-light;
+      color: #fff;
+      border-color: transparent;
     }
   }
   &:not(&:disabled):active {
     background-color: variables.$accent-color-dark;
+    color: #fff;
+    border-color: transparent;
   }
 
   &:disabled {
     background: variables.$disabled-color;
+    color: variables.$secondary-color;
+    cursor:not-allowed;
+    border-color: transparent;
   }
 }

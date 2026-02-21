@@ -7,6 +7,7 @@ import Menu from "components/ui/Menu"
 
 import styles from "./Header.module.scss"
 import { HEADER_ITEMS } from "./header.data"
+import ThemeSwitcher from "components/ui/ThemeSwitcher"
 
 const Header: React.FC = () => {
   return (
@@ -14,9 +15,12 @@ const Header: React.FC = () => {
       <div className={styles.header__container}>
         <Logo withTitle className={styles.header__logo} />
         <Menu className={styles.header__navigation} items={HEADER_ITEMS} />
-        <div className={styles.header__icons}>
-          <Handbag size={30} />
-          <UserRound size={30} />
+        <div className={styles.header__right}>
+          <ThemeSwitcher />
+          <div className={styles.header__icons}>
+            <Handbag size={30} />
+            <UserRound size={30} />
+          </div>
         </div>
       </div>
     </header>

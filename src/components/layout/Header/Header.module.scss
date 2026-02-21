@@ -15,10 +15,14 @@
   &__container {
     @include mixins.container() {
       display: grid;
-      grid-template-columns: 2fr 12fr 1fr;
+      grid-template-columns: 3fr 10fr 3fr;
       align-items: center;
       justify-content: space-between;
     }
+  }
+
+  &__logo {
+    justify-content: flex-start;
   }
   @media screen and (width < variables.$breakpoint-s) {
     &__logo {
@@ -30,10 +34,23 @@
   &__navigation {
     justify-content: center;
   }
-  &__icons {
+  &__right {
     display: flex;
     align-items: center;
     justify-content: end;
     gap: variables.$spacing-12;
+
+    @media screen and (width < variables.$breakpoint-s) {
+      flex-direction: column;
+    }
+  }
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-12;
+
+    & * {
+      cursor: pointer;
+    }
   }
 }

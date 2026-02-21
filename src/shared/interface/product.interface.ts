@@ -26,4 +26,5 @@ export type IProductToList = Pick<
   | "images"
   | "productCategory"
   | "price"
+  | "discountPercent"
 >

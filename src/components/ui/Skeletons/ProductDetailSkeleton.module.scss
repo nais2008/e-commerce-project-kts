@@ -1,29 +1,36 @@
+@use "styles/variables";
+
 .wrapper {
-  display: flex;
-  gap: 48px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: variables.$spacing-40;
+  justify-content: space-between;
+
+  @media screen and (width <= variables.$breakpoint-l) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .image {
-  width: 500px;
-  height: 400px;
+  width: 100%;
+  height: 500px;
 }
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: variables.$spacing-20;
 }
 
 .description {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: variables.$spacing-8;
 }
 
 .buttons {
   display: flex;
-  gap: 16px;
+  gap: variables.$spacing-16;
   margin-top: 12px;
 }

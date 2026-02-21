@@ -1,14 +1,22 @@
 import React from "react"
-import { useNavigate, useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router"
 
 import { useQuery } from "@tanstack/react-query"
 import { isAxiosError } from "axios"
+import classNames from "classnames"
+import { ROUTES } from "constants/routes"
 import { getProductById } from "services/products"
 
 import ErrorMessage from "components/layout/ErrorMessage"
+import ImageSlider from "components/ui/ImageSlider"
 import { ProductDetailSkeleton } from "components/ui/Skeletons"
 
 import styles from "./ProductPage.module.scss"
+import InfoProduct from "./components/InfoProduct"
+import Button from "components/ui/Button"
+import { ChevronLeft } from "lucide-react"
+import Heading from "components/ui/Heading"
+import List from "./components/List"
 
 const ProductPage: React.FC = () => {
   const { id } = useParams()
@@ -26,27 +34,51 @@ const ProductPage: React.FC = () => {
     refetchOnWindowFocus: true,
   })
 
-  if (isPending) return <ProductDetailSkeleton />
+  if (isPending)
+    return (
+      <div className={classNames(styles.product, styles.product__container)}>
+        <ProductDetailSkeleton />
+      </div>
+    )
 
   if (error) {
     if (isAxiosError(error) && error.response?.status === 404) {
-      navigate("/non-existent-path", { replace: true })
+      navigate(ROUTES.notFound.create(), { replace: true })
       return null
     }
 
     return (
-      <div className={styles.error}>
+      <div className={classNames(styles.product, styles.product__container)}>
         <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <button onClick={() => refetch()} className={styles.retryButton}>
+        <Button onClick={() => refetch()} className={styles.retryButton}>
           Try Again
-        </button>
+        </Button>
       </div>
     )
   }
 
   const data = rawData.data
 
-  return <div>{data.title}</div>
+  return (
+    <div className={classNames(styles.product, styles.product__container)}>
+      <Link
+        to="#"
+        className={styles.product__linkPrev}
+        onClick={(e) => {
+          e.preventDefault();
+          navigate(-1);
+        }}
+      >
+        <ChevronLeft size={32} />
+        <Heading view="desc">Back</Heading>
+      </Link>
+      <div className={styles.product__info}>
+        <ImageSlider images={data.images} />
+        <InfoProduct data={data} />
+      </div>
+      <List categoryId={data.productCategory.id} />
+    </div>
+  )
 }
 
 export default ProductPage

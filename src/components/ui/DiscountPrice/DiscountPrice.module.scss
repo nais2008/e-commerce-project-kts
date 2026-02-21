@@ -1,0 +1,23 @@
+@use "styles/variables";
+
+.discountPrice {
+  display: flex;
+  align-items: center;
+  gap: variables.$spacing-8;
+  flex-wrap: wrap;
+
+  &__price_old {
+    text-decoration: line-through;
+  }
+  &__discount {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background-color: variables.$accent-color-dark;
+    padding: variables.$spacing-8;
+    border-radius: variables.$border-radius;
+    color: variables.$white;
+    z-index: 10;
+    opacity: 0.8;
+  }
+}

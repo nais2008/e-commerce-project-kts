@@ -1,0 +1,35 @@
+@use "styles/mixins";
+@use "styles/variables";
+
+main:has(.product .retryButton) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product {
+  &__container {
+    @include mixins.container(variables.$spacing-20) {
+      display: flex;
+      flex-direction: column;
+      gap: variables.$spacing-24;
+    };
+  }
+  &__info {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: variables.$spacing-40;
+    justify-content: space-between;
+
+    @media screen and (width <= variables.$breakpoint-l) {
+      grid-template-columns: 1fr;
+    }
+  }
+  &__linkPrev {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-12;
+    align-self: flex-start;
+  }
+}

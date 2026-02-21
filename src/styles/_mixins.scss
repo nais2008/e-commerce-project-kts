@@ -25,3 +25,19 @@
     }
   }
 }
+
+@mixin fluid-font(
+  $min-size,
+  $max-size,
+  $min-width: variables.$breakpoint-s,
+  $max-width: variables.$breakpoint-xl
+) {
+  $slope: ($max-size - $min-size) / ($max-width - $min-width);
+  $intercept: $min-size - $slope * $min-width;
+
+  font-size: clamp(
+    #{$min-size},
+    calc(#{$intercept} + #{$slope * 100}vw),
+    #{$max-size}
+  );
+}

@@ -11,17 +11,17 @@ export const ProductDetailSkeleton: React.FC = () => {
       </div>
 
       <div className={styles.content}>
-        <Skeleton height={32} width="60%" />
+        <Skeleton height={48} width="60%" />
 
         <div className={styles.description}>
-          <Skeleton count={2} height={16} />
+          <Skeleton count={2} height={24} />
         </div>
 
-        <Skeleton height={28} width={120} />
+        <Skeleton height={48} width={120} />
 
         <div className={styles.buttons}>
-          <Skeleton height={40} width={120} />
-          <Skeleton height={40} width={140} />
+          <Skeleton height={52} width={135} />
+          <Skeleton height={52} width={155} />
         </div>
       </div>
     </div>

@@ -15,4 +15,8 @@ export const ROUTES = {
     mask: "/categories",
     create: () => "/categories",
   },
+  notFound: {
+    mask: "/not-found",
+    create: () => "/not-found",
+  },
 }

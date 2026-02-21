@@ -1,43 +1,38 @@
 import React from "react"
-import Skeleton from "react-loading-skeleton"
-import { useNavigate, useSearchParams } from "react-router"
+import { useNavigate } from "react-router"
 
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
 import { ROUTES } from "constants/routes"
-import { getProducts } from "services/products"
+import { getProducts, getProductsByCategory } from "services/products"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Card from "components/ui/Card"
+import DiscountPrice from "components/ui/DiscountPrice"
 import Heading from "components/ui/Heading"
-import Pagination from "components/ui/Pagination"
 import { CardSkeleton } from "components/ui/Skeletons"
 
 import styles from "./List.module.scss"
-import DiscountPrice from "components/ui/DiscountPrice"
 
-const List: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const page = Number(searchParams.get("page")) || 1
+interface Props {
+  categoryId: number
+}
 
+const List: React.FC<Props> = ({ categoryId }) => {
   const navigate = useNavigate()
 
-  const { isPending, isFetching, error, data, refetch } = useQuery({
-    queryKey: ["products", page],
-    queryFn: () => getProducts(page),
+  const { isPending, error, data, refetch } = useQuery({
+    queryKey: ["productsByCategory"],
+    queryFn: () => getProductsByCategory(categoryId, 3),
     refetchOnWindowFocus: true,
   })
-
-  const handlePageChange = (newPage: number) => {
-    setSearchParams({ page: newPage.toString() })
-  }
 
   if (isPending)
     return (
       <section className={styles.list}>
         <Heading view="subtitle" tag="h2" className={styles.list__title}>
-          Total products <Skeleton width={30} />
+          Related Items
         </Heading>
         <div className={styles.list__items}>
           {[...Array(9)].map((_, i) => (
@@ -58,20 +53,11 @@ const List: React.FC = () => {
     )
 
   const dataArr = data?.data
-  const pagination = data?.meta?.pagination
 
   return (
     <section className={styles.list}>
       <Heading view="subtitle" tag="h2" className={styles.list__title}>
-        Total products
-        <Heading
-          tag="span"
-          color="accent"
-          view="paragraph"
-          className={styles.list__totalProducts}
-        >
-          {pagination.total}
-        </Heading>
+        Related Items
       </Heading>
       <div className={styles.list__items}>
         {dataArr.map((item) => (
@@ -92,14 +78,6 @@ const List: React.FC = () => {
           />
         ))}
       </div>
-      {pagination && pagination.pageCount > 1 && (
-        <Pagination
-          page={page}
-          pageCount={pagination.pageCount}
-          onPageChange={handlePageChange}
-          isFetching={isFetching}
-        />
-      )}
     </section>
   )
 }

@@ -8,6 +8,7 @@ import ProductPage from "pages/product/byId"
 import ProductsListPage from "pages/product/list"
 
 import App from "../App"
+import HeadProvider from "providers/HeadProvider"
 
 export const routesConfig: RouteObject[] = [
   {
@@ -30,6 +31,6 @@ export const routesConfig: RouteObject[] = [
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: <HeadProvider><NotFound /></HeadProvider>,
   },
 ]
