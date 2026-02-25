@@ -7,18 +7,18 @@
   justify-content: center;
   gap: variables.$spacing-8;
   padding: variables.$spacing-16 variables.$spacing-20;
-  color: #fff;
+  color: variables.$text-color-static;
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
   transition:
     background 0.2s,
-    border 0.2s,
+    border-color 0.2s,
     color 0.2s;
   border-radius: variables.$border-radius;
 
-  div {
-    border-color: variables.$white;
+  &__loader {
+    border-color: variables.$text-color-static;
     border-right-color: transparent;
   }
 
@@ -31,13 +31,13 @@
   @media (hover: hover) {
     &:not(&:disabled):hover {
       background: variables.$accent-color-light;
-      color: #fff;
+      color: variables.$text-color-static;
       border-color: transparent;
     }
   }
   &:not(&:disabled):active {
     background-color: variables.$accent-color-dark;
-    color: #fff;
+    color: variables.$text-color-static;
     border-color: transparent;
   }
 

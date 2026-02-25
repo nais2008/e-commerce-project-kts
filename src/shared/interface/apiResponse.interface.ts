@@ -9,3 +9,13 @@ export interface ApiResponse<T> {
     }
   }
 }
+
+export interface ApiErrorResponse {
+  data: null
+  error: {
+    status: number
+    name: string
+    message: string
+    details?: unknown
+  }
+}

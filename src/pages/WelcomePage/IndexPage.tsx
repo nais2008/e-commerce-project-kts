@@ -7,14 +7,14 @@ import { ROUTES } from "constants/routes"
 import Button from "components/ui/Button"
 import Heading from "components/ui/Heading"
 
-import styles from "./IndexPage.module.scss"
+import s from "./WelcomePage.module.scss"
 
-const IndexPage: React.FC = () => {
+const WelcomePage: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <div className={classNames(styles.index, styles.index__container)}>
-      <Heading view="title" tag="h1" className={styles.index__title}>
+    <div className={classNames(s.index, s.index__container)}>
+      <Heading view="title" tag="h1" className={s.index__title}>
         Welcome to <span>Lalasia</span>
       </Heading>
       <Button onClick={() => navigate(ROUTES.products.create())}>
@@ -24,4 +24,4 @@ const IndexPage: React.FC = () => {
   )
 }
 
-export default IndexPage
+export default WelcomePage

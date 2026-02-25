@@ -21,7 +21,7 @@
     --back-color: #1a1d21;
     --back-color-second: #25292e;
 
-    ---accent-color: #7aa8a4;
+    --accent-color: #7aa8a4;
     --accent-color-light: #9bb9b6;
     --accent-color-dark: #4d7a76;
 
@@ -85,7 +85,7 @@ $secondary-color: var(--secondary-color);
 $text-color: var(--text-color);
 
 $disabled-color: var(--disabled-color);
-$white: #fff;
+$text-color-static: #fff;
 
 $shadow: var(--shadow);
 
@@ -103,3 +103,7 @@ $spacing-24: 24px;
 $spacing-40: 40px;
 
 $border-radius: 0px;
+
+$z-index-0: 0;
+$z-index-10: 10;
+$z-index-20: 20;

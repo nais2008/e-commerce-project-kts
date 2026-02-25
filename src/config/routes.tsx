@@ -3,10 +3,10 @@ import type { RouteObject } from "react-router"
 import { ROUTES } from "constants/routes"
 import HeadProvider from "providers/HeadProvider"
 
-import IndexPage from "pages/index"
-import NotFound from "pages/not-found"
-import ProductPage from "pages/product/byId"
-import ProductsListPage from "pages/product/list"
+import NotFound from "pages/NotFound"
+import WelcomePage from "pages/WelcomePage"
+import ProductPage from "pages/product/ProductPage"
+import ProductsListPage from "pages/product/ProductsListPage"
 
 import App from "../App"
 
@@ -17,7 +17,7 @@ export const routesConfig: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <IndexPage />,
+        element: <WelcomePage />,
       },
       {
         path: ROUTES.products.mask,

@@ -11,13 +11,13 @@
   }
   &__discount {
     position: absolute;
+    z-index: variables.$z-index-10;
     left: 5px;
     top: 5px;
     background-color: variables.$accent-color-dark;
     padding: variables.$spacing-8;
     border-radius: variables.$border-radius;
-    color: variables.$white;
-    z-index: 10;
+    color: variables.$text-color-static;
     opacity: 0.8;
   }
 }

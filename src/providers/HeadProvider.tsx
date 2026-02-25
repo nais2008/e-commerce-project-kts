@@ -1,5 +1,7 @@
 import React from "react"
 
+import { ReactQueryProvider } from "api/provider"
+
 import { ThemeProvider } from "./ThemeProvider"
 
 interface HeadProviderProps {
@@ -7,7 +9,11 @@ interface HeadProviderProps {
 }
 
 const HeadProvider: React.FC<HeadProviderProps> = ({ children }) => {
-  return <ThemeProvider>{children}</ThemeProvider>
+  return (
+    <ReactQueryProvider>
+      <ThemeProvider>{children}</ThemeProvider>
+    </ReactQueryProvider>
+  )
 }
 
 export default HeadProvider

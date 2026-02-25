@@ -1,4 +1,4 @@
-import { apiClient } from "api/client"
+import { apiClient } from "api/axios"
 import { ENDPOINTS } from "constants/endpoints"
 import qs from "qs"
 import type { ApiResponse } from "shared/interface/apiResponse.interface"

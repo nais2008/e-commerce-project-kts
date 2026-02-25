@@ -1,25 +1,25 @@
 import React from "react"
 import Skeleton from "react-loading-skeleton"
 
-import styles from "./ProductDetailSkeleton.module.scss"
+import s from "./ProductDetailSkeleton.module.scss"
 
-export const ProductDetailSkeleton: React.FC = () => {
+const ProductDetailSkeleton: React.FC = () => {
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.image}>
+    <div className={s.wrapper}>
+      <div className={s.image}>
         <Skeleton height="100%" width="100%" />
       </div>
 
-      <div className={styles.content}>
+      <div className={s.content}>
         <Skeleton height={48} width="60%" />
 
-        <div className={styles.description}>
+        <div className={s.description}>
           <Skeleton count={2} height={24} />
         </div>
 
         <Skeleton height={48} width={120} />
 
-        <div className={styles.buttons}>
+        <div className={s.buttons}>
           <Skeleton height={52} width={135} />
           <Skeleton height={52} width={155} />
         </div>
@@ -27,3 +27,5 @@ export const ProductDetailSkeleton: React.FC = () => {
     </div>
   )
 }
+
+export default ProductDetailSkeleton

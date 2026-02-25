@@ -13,9 +13,9 @@ import Card from "components/ui/Card"
 import DiscountPrice from "components/ui/DiscountPrice"
 import Heading from "components/ui/Heading"
 import Pagination from "components/ui/Pagination"
-import { CardSkeleton } from "components/ui/Skeletons"
+import CardSkeleton from "components/ui/skeletons/CardSkeleton"
 
-import styles from "./List.module.scss"
+import s from "./List.module.scss"
 
 const List: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -26,7 +26,6 @@ const List: React.FC = () => {
   const { isPending, isFetching, error, data, refetch } = useQuery({
     queryKey: ["products", page],
     queryFn: () => getProducts(page),
-    refetchOnWindowFocus: true,
   })
 
   const handlePageChange = (newPage: number) => {
@@ -35,11 +34,11 @@ const List: React.FC = () => {
 
   if (isPending)
     return (
-      <section className={styles.list}>
-        <Heading view="subtitle" tag="h2" className={styles.list__title}>
+      <section className={s.list}>
+        <Heading view="subtitle" tag="h2" className={s.list__title}>
           Total products <Skeleton width={30} />
         </Heading>
-        <div className={styles.list__items}>
+        <div className={s.list__items}>
           {[...Array(9)].map((_, i) => (
             <CardSkeleton key={i} />
           ))}
@@ -49,9 +48,9 @@ const List: React.FC = () => {
 
   if (error)
     return (
-      <div className={classNames(styles.list)}>
+      <div className={classNames(s.list)}>
         <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={styles.retryButton}>
+        <Button onClick={() => refetch()} className={s.retryButton}>
           Try Again
         </Button>
       </div>
@@ -61,19 +60,19 @@ const List: React.FC = () => {
   const pagination = data?.meta?.pagination
 
   return (
-    <section className={styles.list}>
-      <Heading view="subtitle" tag="h2" className={styles.list__title}>
+    <section className={s.list}>
+      <Heading view="subtitle" tag="h2" className={s.list__title}>
         Total products
         <Heading
           tag="span"
           color="accent"
           view="paragraph"
-          className={styles.list__totalProducts}
+          className={s.list__totalProducts}
         >
           {pagination.total}
         </Heading>
       </Heading>
-      <div className={styles.list__items}>
+      <div className={s.list__items}>
         {dataArr.map((item) => (
           <Card
             key={item.id}

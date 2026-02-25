@@ -2,9 +2,9 @@ import React from "react"
 
 import classNames from "classnames"
 
-import styles from "./Heading.module.scss"
+import s from "./Heading.module.scss"
 
-export type HeadingProps = {
+type HeadingProps = {
   className?: string
   view?: "title" | "button" | "subtitle" | "desc" | "paragraph"
   tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div" | "p" | "span"
@@ -26,19 +26,17 @@ const Heading: React.FC<HeadingProps> = ({
 }: HeadingProps) => {
   const Component = tag
 
-  const classList: string[] = [styles.root]
+  const classList: string[] = [s.root]
 
   if (className) classList.push(className)
 
-  if (view && styles[`view_${view}`]) classList.push(styles[`view_${view}`])
+  if (view && s[`view_${view}`]) classList.push(s[`view_${view}`])
 
-  if (weight && styles[`weight_${weight}`])
-    classList.push(styles[`weight_${weight}`])
+  if (weight && s[`weight_${weight}`]) classList.push(s[`weight_${weight}`])
 
-  if (color && styles[`color_${color}`])
-    classList.push(styles[`color_${color}`])
+  if (color && s[`color_${color}`]) classList.push(s[`color_${color}`])
 
-  if (maxLines) classList.push(styles.ellipsis)
+  if (maxLines) classList.push(s.ellipsis)
 
   const style = maxLines
     ? ({
@@ -49,7 +47,14 @@ const Heading: React.FC<HeadingProps> = ({
 
   return (
     <Component
-      className={classNames(classList, styles.heading)}
+      className={classNames(
+        s.heading,
+        className,
+        view && s[`view_${view}`],
+        weight && s[`weight_${weight}`],
+        color && s[`color_${color}`],
+        maxLines && s.ellipsis
+      )}
       style={style}
       {...props}
     >

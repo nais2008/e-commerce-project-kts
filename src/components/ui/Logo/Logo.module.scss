@@ -4,4 +4,10 @@
   display: flex;
   align-items: center;
   gap: variables.$spacing-24;
+
+  @media screen and (width < variables.$breakpoint-s) {
+    &__title {
+      display: none;
+    }
+  }
 }

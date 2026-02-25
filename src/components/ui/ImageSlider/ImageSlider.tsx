@@ -9,9 +9,11 @@ import "swiper/css/navigation"
 import { Navigation } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-import styles from "./ImageSlider.module.scss"
+import s from "./ImageSlider.module.scss"
 
-interface Props {
+const ICON_SIZE = 30
+
+type Props = {
   images: IImage[]
 }
 
@@ -38,36 +40,36 @@ const ImageSlider: React.FC<Props> = ({ images }) => {
       slidesPerView={1}
       loop={false}
       navigation={{
-        prevEl: `.${styles.slider__btn_prev}`,
-        nextEl: `.${styles.slider__btn_next}`,
+        prevEl: `.${s.slider__btn_prev}`,
+        nextEl: `.${s.slider__btn_next}`,
       }}
       onSlideChange={handleSlideChange}
       onSwiper={(swiper: SwiperType) => {
         swiperRef.current = swiper
       }}
-      className={styles.slider}
+      className={s.slider}
     >
       {images.map((image) => (
         <SwiperSlide key={image.id}>
           <img
             src={getImageUrl(image)}
             alt={image.alternativeText || ""}
-            className={styles.slider__image}
+            className={s.slider__image}
           />
         </SwiperSlide>
       ))}
       <button
-        className={classNames(styles.slider__btn, styles.slider__btn_prev)}
+        className={classNames(s.slider__btn, s.slider__btn_prev)}
         disabled={isBeginning}
       >
-        <ChevronLeft size={30} />
+        <ChevronLeft size={ICON_SIZE} />
       </button>
 
       <button
-        className={classNames(styles.slider__btn, styles.slider__btn_next)}
+        className={classNames(s.slider__btn, s.slider__btn_next)}
         disabled={isEnd}
       >
-        <ChevronRight size={30} />
+        <ChevronRight size={ICON_SIZE} />
       </button>
     </Swiper>
   )

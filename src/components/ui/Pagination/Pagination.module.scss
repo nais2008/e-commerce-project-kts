@@ -6,11 +6,13 @@
   justify-content: center;
   gap: variables.$spacing-12;
 
-  &__active {
-    background-color: variables.$accent-color;
-    color: variables.$white;
-    padding: calc(#{variables.$spacing-8} - 2px) variables.$spacing-12;
-    border-radius: variables.$border-radius;
+  @media screen and (width <= variables.$breakpoint-s) {
+    gap: variables.$spacing-8;
+    flex-wrap: wrap;
+  }
+
+  &__dots {
+    padding-block: calc(#{variables.$spacing-12} + 2px);
   }
   &__btn {
     padding: variables.$spacing-8;

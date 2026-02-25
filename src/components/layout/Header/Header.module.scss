@@ -24,13 +24,7 @@
   &__logo {
     justify-content: flex-start;
   }
-  @media screen and (width < variables.$breakpoint-s) {
-    &__logo {
-      *:not(img) {
-        display: none;
-      }
-    }
-  }
+
   &__navigation {
     justify-content: center;
   }
@@ -48,9 +42,6 @@
     display: flex;
     align-items: center;
     gap: variables.$spacing-12;
-
-    & * {
-      cursor: pointer;
-    }
+    cursor: pointer;
   }
 }

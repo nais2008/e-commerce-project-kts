@@ -1,4 +1,5 @@
 @use "styles/variables";
+@use "styles/mixins";
 
 $arrow-color: #{variables.$back-color-second};
 $arrow-color-back: #{variables.$primary-color};
@@ -30,15 +31,14 @@ $arrow-color-back: #{variables.$primary-color};
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+    @include mixins.square(48px);
     border: none;
+    border-radius: 50%;
     background: $arrow-color-back;
     color: $arrow-color;
     cursor: pointer;
-    z-index: 10;
-    transition: all 0.2s;
+    z-index: variables.$z-index-10;
+    transition: opacity 0.2s;
 
     &:hover:not(:disabled) {
       opacity: 0.8;

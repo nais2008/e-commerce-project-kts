@@ -4,18 +4,18 @@ import { useNavigate } from "react-router"
 import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
 import { ROUTES } from "constants/routes"
-import { getProducts, getProductsByCategory } from "services/products"
+import { getProductsByCategory } from "services/products"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Card from "components/ui/Card"
 import DiscountPrice from "components/ui/DiscountPrice"
 import Heading from "components/ui/Heading"
-import { CardSkeleton } from "components/ui/Skeletons"
+import CardSkeleton from "components/ui/skeletons/CardSkeleton"
 
-import styles from "./List.module.scss"
+import s from "./List.module.scss"
 
-interface Props {
+type Props = {
   categoryId: number
 }
 
@@ -30,11 +30,11 @@ const List: React.FC<Props> = ({ categoryId }) => {
 
   if (isPending)
     return (
-      <section className={styles.list}>
-        <Heading view="subtitle" tag="h2" className={styles.list__title}>
+      <section className={s.list}>
+        <Heading view="subtitle" tag="h2" className={s.list__title}>
           Related Items
         </Heading>
-        <div className={styles.list__items}>
+        <div className={s.list__items}>
           {[...Array(9)].map((_, i) => (
             <CardSkeleton key={i} />
           ))}
@@ -44,9 +44,9 @@ const List: React.FC<Props> = ({ categoryId }) => {
 
   if (error)
     return (
-      <div className={classNames(styles.list)}>
+      <div className={classNames(s.list)}>
         <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={styles.retryButton}>
+        <Button onClick={() => refetch()} className={s.retryButton}>
           Try Again
         </Button>
       </div>
@@ -55,11 +55,11 @@ const List: React.FC<Props> = ({ categoryId }) => {
   const dataArr = data?.data
 
   return (
-    <section className={styles.list}>
-      <Heading view="subtitle" tag="h2" className={styles.list__title}>
+    <section className={s.list}>
+      <Heading view="subtitle" tag="h2" className={s.list__title}>
         Related Items
       </Heading>
-      <div className={styles.list__items}>
+      <div className={s.list__items}>
         {dataArr.map((item) => (
           <Card
             key={item.id}

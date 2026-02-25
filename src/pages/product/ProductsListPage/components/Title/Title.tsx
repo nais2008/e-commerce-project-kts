@@ -2,12 +2,12 @@ import React from "react"
 
 import Heading from "components/ui/Heading"
 
-import styles from "./Title.module.scss"
+import s from "./Title.module.scss"
 
 const Title: React.FC = () => {
   return (
-    <article className={styles.title}>
-      <div className={styles.title__container}>
+    <article className={s.title}>
+      <div className={s.title__container}>
         <Heading view="title" tag="h1">
           Products
         </Heading>

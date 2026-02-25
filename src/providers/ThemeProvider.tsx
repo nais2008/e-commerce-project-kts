@@ -3,10 +3,12 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
 
 export type ThemeValue = "light" | "dark" | "auto"
+
 export const STORAGE_KEY = "app-theme"
 
 interface ThemeContextType {
@@ -27,39 +29,28 @@ const getSystemTheme = (): "light" | "dark" => {
   return "light"
 }
 
-export const ThemeScript = () => {
-  const scriptContent = `
-    (function() {
-      try {
-        var storageKey = '${STORAGE_KEY}';
-        var theme = localStorage.getItem(storageKey) || 'auto';
-        var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var resolved = theme === 'auto' ? (supportDarkMode ? 'dark' : 'light') : theme;
-
-        document.documentElement.classList.remove('light-theme', 'dark-theme');
-        document.documentElement.classList.add(resolved + '-theme');
-        document.documentElement.style.colorScheme = resolved;
-      } catch (e) {}
-    })();
-  `
-  return <script dangerouslySetInnerHTML={{ __html: scriptContent }} />
-}
-
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setThemeState] = useState<ThemeValue>("auto")
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light")
+  const [theme, setThemeState] = useState<ThemeValue>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    return saved === "light" || saved === "dark" || saved === "auto"
+      ? saved
+      : "auto"
+  })
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem(STORAGE_KEY) as ThemeValue
-    if (["light", "dark", "auto"].includes(savedTheme)) {
-      setThemeState(savedTheme)
-    }
-  }, [])
+  const [systemTheme, setSystemTheme] = useState<"light" | "dark">(
+    getSystemTheme
+  )
+
+  const resolvedTheme = useMemo(
+    () => (theme === "auto" ? systemTheme : theme),
+    [theme, systemTheme]
+  )
 
   const setTheme = useCallback((newTheme: ThemeValue) => {
     setThemeState(newTheme)
+
     if (newTheme === "auto") {
       localStorage.removeItem(STORAGE_KEY)
     } else {
@@ -68,37 +59,45 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [])
 
   useEffect(() => {
-    const root = document.documentElement
-    const resolved = theme === "auto" ? getSystemTheme() : theme
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
 
-    root.classList.remove("light-theme", "dark-theme")
-    root.classList.add(`${resolved}-theme`)
-    root.style.colorScheme = resolved
-    setResolvedTheme(resolved)
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark light)")
     const handleChange = () => {
-      if (theme === "auto") {
-        const newSystemTheme = getSystemTheme()
-        root.classList.remove("light-theme", "dark-theme")
-        root.classList.add(`${newSystemTheme}-theme`)
-        setResolvedTheme(newSystemTheme)
-      }
+      setSystemTheme(getSystemTheme())
     }
 
     mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [theme])
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+
+    root.classList.remove("light-theme", "dark-theme")
+    root.classList.add(`${resolvedTheme}-theme`)
+    root.style.colorScheme = resolvedTheme
+  }, [resolvedTheme])
+
+  const value = useMemo(
+    () => ({
+      theme,
+      setTheme,
+      resolvedTheme,
+    }),
+    [theme, setTheme, resolvedTheme]
   )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
 export const useTheme = () => {
   const context = useContext(ThemeContext)
-  if (!context) throw new Error("useTheme must be used within ThemeProvider")
+
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider")
+  }
+
   return context
 }

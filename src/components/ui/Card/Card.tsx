@@ -4,9 +4,9 @@ import cn from "classnames"
 
 import Heading from "components/ui/Heading"
 
-import styles from "./Card.module.scss"
+import s from "./Card.module.scss"
 
-export type CardProps = {
+type CardProps = {
   className?: string
   image: string
   captionSlot?: React.ReactNode
@@ -28,19 +28,19 @@ const Card: React.FC<CardProps> = ({
   actionSlot,
 }) => {
   return (
-    <div className={cn(styles.card, className)} onClick={onClick}>
+    <div className={cn(s.card, className)} onClick={onClick}>
       <img
         src={image}
         alt={image}
-        className={styles.card__image}
+        className={s.card__image}
         width={500}
         height={500}
       />
-      <div className={styles.card__content}>
-        <div className={styles.card__text}>
+      <div className={s.card__content}>
+        <div className={s.card__info}>
           {captionSlot && (
             <Heading
-              className={styles.card__captionSlot}
+              className={s.card__captionSlot}
               view="paragraph"
               color="secondary"
               weight="medium"
@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> = ({
             </Heading>
           )}
           <Heading
-            className={styles.card__title}
+            className={s.card__title}
             view="desc"
             weight="medium"
             maxLines={2}
@@ -57,7 +57,7 @@ const Card: React.FC<CardProps> = ({
             {title}
           </Heading>
           <Heading
-            className={styles.card__subtitle}
+            className={s.card__subtitle}
             view="paragraph"
             color="secondary"
             maxLines={2}
@@ -65,19 +65,9 @@ const Card: React.FC<CardProps> = ({
             {subtitle}
           </Heading>
         </div>
-        <div className={styles.card__footer}>
-          {contentSlot && (
-            <Heading
-              className={styles.card__contentSlot}
-              view="desc"
-              weight="bold"
-            >
-              {contentSlot}
-            </Heading>
-          )}
-          {actionSlot && (
-            <div className={styles.card__actionSlot}>{actionSlot}</div>
-          )}
+        <div className={s.card__footer}>
+          {contentSlot}
+          {actionSlot && <div className={s.card__actionSlot}>{actionSlot}</div>}
         </div>
       </div>
     </div>

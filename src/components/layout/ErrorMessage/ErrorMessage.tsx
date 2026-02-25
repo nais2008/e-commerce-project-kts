@@ -2,9 +2,9 @@ import React from "react"
 
 import Heading from "components/ui/Heading"
 
-import styles from "./ErrorMessage.module.scss"
+import s from "./ErrorMessage.module.scss"
 
-interface ErrorProps {
+type ErrorProps = {
   errorMess: string | undefined
 }
 
@@ -12,7 +12,7 @@ const ErrorMessage: React.FC<ErrorProps> = ({ errorMess }) => {
   if (!errorMess) return null
 
   return (
-    <Heading tag="p" weight="bold" className={styles.error}>
+    <Heading tag="p" weight="bold" className={s.error}>
       {errorMess}
     </Heading>
   )

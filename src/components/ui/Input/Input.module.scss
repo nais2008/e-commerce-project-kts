@@ -13,7 +13,7 @@
     border: 1px solid variables.$back-color-second;
     transition:
       box-shadow 0.2s,
-      border 0.2s;
+      border-color 0.2s;
 
     @media (hover: hover) {
       &:hover:not(:has(input:disabled)) {
@@ -21,7 +21,7 @@
       }
     }
     &:focus-within {
-      border: 1px solid variables.$accent-color;
+      border-color: variables.$accent-color;
       box-shadow: variables.$shadow;
     }
     &:has(input:disabled) {

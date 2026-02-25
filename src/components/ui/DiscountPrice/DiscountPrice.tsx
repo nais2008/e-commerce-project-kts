@@ -3,9 +3,9 @@ import React from "react"
 import { calculateDiscountedPrice } from "utils/calculateDiscountedPrice"
 
 import Heading from "../Heading"
-import styles from "./DiscountPrice.module.scss"
+import s from "./DiscountPrice.module.scss"
 
-interface Props {
+type Props = {
   price: number
   discountPercent: number
   view?: "title" | "button" | "subtitle" | "desc" | "paragraph"
@@ -19,19 +19,21 @@ const DiscountPrice: React.FC<Props> = ({ price, discountPercent, view }) => {
       <Heading
         tag={view == "subtitle" ? "h2" : "span"}
         view={view == "subtitle" ? view : "desc"}
-        className={styles.discountPrice__price}
+        weight="medium"
+        className={s.discountPrice__price}
       >
         ${price.toFixed(2)}
       </Heading>
     )
 
   return (
-    <div className={styles.discountPrice}>
+    <div className={s.discountPrice}>
       <Heading
         tag={view == "subtitle" ? "h2" : "span"}
         color="accent"
         view={view == "subtitle" ? view : "desc"}
-        className={styles.discountPrice__price}
+        weight="medium"
+        className={s.discountPrice__price}
       >
         ${discountedPrice}
       </Heading>
@@ -39,15 +41,14 @@ const DiscountPrice: React.FC<Props> = ({ price, discountPercent, view }) => {
         tag="span"
         view="paragraph"
         color="secondary"
-        weight="normal"
-        className={styles.discountPrice__price_old}
+        className={s.discountPrice__price_old}
       >
         ${price.toFixed(2)}
       </Heading>
       <Heading
         tag="span"
         view="paragraph"
-        className={styles.discountPrice__discount}
+        className={s.discountPrice__discount}
       >
         -{discountPercent}%
       </Heading>

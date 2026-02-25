@@ -4,7 +4,7 @@ import { ROUTES } from "constants/routes"
 
 import Heading from "components/ui/Heading"
 
-import styles from "./Footer.module.scss"
+import s from "./Footer.module.scss"
 
 const Footer = () => {
   const year =
@@ -13,12 +13,12 @@ const Footer = () => {
       : `2026 - ${new Date().getFullYear()}`
 
   return (
-    <footer className={styles.footer}>
-      <div className={styles.footer__container}>
+    <footer className={s.footer}>
+      <div className={s.footer__container}>
         <Heading view="paragraph" weight="medium" color="secondary">
           © Lalasia {year}
         </Heading>
-        <nav className={styles.footer__navigate}>
+        <nav className={s.footer__navigate}>
           <Link to={ROUTES.products.create()}>Go to products</Link>
           <Link to={ROUTES.categories.create()}>Go to categories</Link>
           <Link

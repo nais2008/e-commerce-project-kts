@@ -12,9 +12,9 @@ import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Heading from "components/ui/Heading"
 import ImageSlider from "components/ui/ImageSlider"
-import { ProductDetailSkeleton } from "components/ui/Skeletons"
+import ProductDetailSkeleton from "components/ui/skeletons/ProductDetailSkeleton"
 
-import styles from "./ProductPage.module.scss"
+import s from "./ProductPage.module.scss"
 import InfoProduct from "./components/InfoProduct"
 import List from "./components/List"
 
@@ -31,12 +31,11 @@ const ProductPage: React.FC = () => {
   } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById(id ?? ""),
-    refetchOnWindowFocus: true,
   })
 
   if (isPending)
     return (
-      <div className={classNames(styles.product, styles.product__container)}>
+      <div className={classNames(s.product, s.product__container)}>
         <ProductDetailSkeleton />
       </div>
     )
@@ -48,9 +47,9 @@ const ProductPage: React.FC = () => {
     }
 
     return (
-      <div className={classNames(styles.product, styles.product__container)}>
+      <div className={classNames(s.product, s.product__container)}>
         <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={styles.retryButton}>
+        <Button onClick={() => refetch()} className={s.retryButton}>
           Try Again
         </Button>
       </div>
@@ -60,10 +59,10 @@ const ProductPage: React.FC = () => {
   const data = rawData.data
 
   return (
-    <div className={classNames(styles.product, styles.product__container)}>
+    <div className={classNames(s.product, s.product__container)}>
       <Link
         to="#"
-        className={styles.product__linkPrev}
+        className={s.product__linkPrev}
         onClick={(e) => {
           e.preventDefault()
           navigate(-1)
@@ -72,7 +71,7 @@ const ProductPage: React.FC = () => {
         <ChevronLeft size={32} />
         <Heading view="desc">Back</Heading>
       </Link>
-      <div className={styles.product__info}>
+      <div className={s.product__info}>
         <ImageSlider images={data.images} />
         <InfoProduct data={data} />
       </div>

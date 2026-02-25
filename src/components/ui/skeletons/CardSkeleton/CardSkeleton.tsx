@@ -1,9 +1,9 @@
 import React from "react"
 import Skeleton from "react-loading-skeleton"
 
-import Card from "../Card"
+import Card from "components/ui/Card"
 
-export const CardSkeleton: React.FC = () => {
+const CardSkeleton: React.FC = () => {
   return (
     <Card
       title={<Skeleton />}
@@ -14,3 +14,5 @@ export const CardSkeleton: React.FC = () => {
     />
   )
 }
+
+export default CardSkeleton

@@ -1,3 +1,10 @@
+/**
+ * Calculates the final price after applying a percentage discount.
+ *
+ * @param price - Original product price
+ * @param discountPercent - Discount percentage (0–100)
+ * @returns Discounted price rounded to 2 decimal places
+ */
 export const calculateDiscountedPrice = (
   price: number,
   discountPercent: number

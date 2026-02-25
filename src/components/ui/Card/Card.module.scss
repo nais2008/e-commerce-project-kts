@@ -9,18 +9,22 @@
   padding-bottom: variables.$spacing-16;
   border-radius: variables.$border-radius;
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
   cursor: pointer;
   position: relative;
 
   @media (hover: hover) {
     &:hover {
       box-shadow: variables.$shadow;
+      transform: scale(1.03);
     }
   }
   @media (hover: none) {
     &:active {
       box-shadow: variables.$shadow;
+      transform: scale(1.03);
     }
   }
 
@@ -45,7 +49,7 @@
   &__contentSlot {
     line-height: 22px;
   }
-  &__text {
+  &__info {
     flex: 1;
     display: flex;
     flex-direction: column;

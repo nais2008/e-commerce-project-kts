@@ -1,13 +1,15 @@
-import React from "react"
+import React, { useMemo } from "react"
 
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import Button from "components/ui/Button"
 
-import Heading from "../Heading"
-import styles from "./Pagination.module.scss"
+import { getPagesForPagination } from "utils/getPagesForPagination"
 
-interface PaginationProps {
+import Heading from "../Heading"
+import s from "./Pagination.module.scss"
+
+type PaginationProps = {
   page: number
   pageCount: number
   onPageChange: (page: number) => void
@@ -15,6 +17,7 @@ interface PaginationProps {
 }
 
 const MAX_VISIBLE = 5
+const ICON_SIZE = 35
 
 const Pagination: React.FC<PaginationProps> = ({
   page,
@@ -22,58 +25,38 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   isFetching = false,
 }) => {
-  const getPages = () => {
-    if (pageCount <= MAX_VISIBLE) {
-      return Array.from({ length: pageCount }, (_, i) => i + 1)
-    }
-
-    const pages: (number | "...")[] = []
-
-    const start = Math.max(1, page - 1)
-    const end = Math.min(pageCount, page + 1)
-
-    if (start > 1) {
-      pages.push(1)
-      if (start > 2) pages.push("...")
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i)
-    }
-
-    if (end < pageCount) {
-      if (end < pageCount - 1) pages.push("...")
-      pages.push(pageCount)
-    }
-
-    return pages
-  }
-
-  const pages = getPages()
+  const pages = useMemo(
+    () => getPagesForPagination(page, pageCount, MAX_VISIBLE),
+    [page, pageCount]
+  )
 
   return (
-    <div className={styles.pagination}>
+    <div className={s.pagination}>
       <Button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1 || isFetching}
         type="button"
-        className={styles.pagination__btn}
+        className={s.pagination__btn}
       >
-        <ChevronLeft size={35} />
+        <ChevronLeft size={ICON_SIZE} />
       </Button>
 
       {pages.map((p, index) =>
         p === "..." ? (
-          <Heading tag="span" key={index} className={styles.dots}>
+          <Heading tag="span" key={index} className={s.pagination__dots}>
             ...
           </Heading>
         ) : (
-          <Heading
+          <Button
             key={p}
-            className={p === page ? styles.pagination__active : ""}
+            onClick={() => onPageChange(p)}
+            disabled={isFetching}
+            type="button"
+            className={s.pagination__dots}
+            isPrimary={p === page}
           >
             {p}
-          </Heading>
+          </Button>
         )
       )}
 
@@ -81,9 +64,9 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={() => onPageChange(page + 1)}
         disabled={page === pageCount || isFetching}
         type="button"
-        className={styles.pagination__btn}
+        className={s.pagination__btn}
       >
-        <ChevronRight size={35} />
+        <ChevronRight size={ICON_SIZE} />
       </Button>
     </div>
   )

@@ -5,9 +5,9 @@ import { ROUTES } from "constants/routes"
 
 import Heading from "components/ui/Heading"
 
-import styles from "./Logo.module.scss"
+import s from "./Logo.module.scss"
 
-interface LogoProps {
+type LogoProps = {
   withTitle?: boolean
   className?: string
 }
@@ -17,19 +17,16 @@ const Logo: React.FC<LogoProps> = ({
   className,
 }: LogoProps) => {
   return (
-    <Link
-      to={ROUTES.main.create()}
-      className={classNames(styles.logo, className)}
-    >
+    <Link to={ROUTES.main.create()} className={classNames(s.logo, className)}>
       <img
         src="/big-logo.png"
         width={42}
         height={42}
         alt="logo"
-        className={styles.logo__img}
+        className={s.logo__img}
       />
       {withTitle && (
-        <Heading view="subtitle" weight="medium">
+        <Heading view="subtitle" weight="medium" className={s.logo__title}>
           Lalasia
         </Heading>
       )}

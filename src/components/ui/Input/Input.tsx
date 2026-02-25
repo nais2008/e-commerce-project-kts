@@ -2,9 +2,9 @@ import React from "react"
 
 import cn from "classnames"
 
-import styles from "./Input.module.scss"
+import s from "./Input.module.scss"
 
-export type InputProps = Omit<
+type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "onChange" | "value"
 > & {
@@ -25,18 +25,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     )
 
     return (
-      <div className={styles.input__wrapper}>
+      <div className={s.input__wrapper}>
         <input
           ref={ref}
           {...props}
           onChange={handlerChange}
           value={value}
-          className={cn(styles.input__field, className)}
+          className={cn(s.input__field, className)}
           type="text"
         />
-        {afterSlot && (
-          <div className={styles.input__afterSlot}>{afterSlot}</div>
-        )}
+        {afterSlot && <div className={s.input__afterSlot}>{afterSlot}</div>}
       </div>
     )
   }

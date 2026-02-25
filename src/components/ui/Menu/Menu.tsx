@@ -5,15 +5,15 @@ import classNames from "classnames"
 import { MenuIcon } from "lucide-react"
 import { match } from "path-to-regexp"
 
-import styles from "./Menu.module.scss"
+import s from "./Menu.module.scss"
 
-export interface MenuItem {
+type MenuItem = {
   name: string
   link: () => string
-  red?: boolean
+  redText?: boolean
 }
 
-interface MenuProps {
+type MenuProps = {
   items: MenuItem[]
   className?: string
   icon?: null | React.ReactNode
@@ -43,9 +43,9 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
   const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), [])
 
   return (
-    <nav className={classNames(styles.menu, className)} ref={menuRef}>
+    <nav className={classNames(s.menu, className)} ref={menuRef}>
       <button
-        className={styles.menu__toggle}
+        className={s.menu__toggle}
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
@@ -53,8 +53,8 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
       </button>
 
       <div
-        className={classNames(styles.menu__list, {
-          [styles.menu__list_open]: isOpen,
+        className={classNames(s.menu__list, {
+          [s.menu__list_open]: isOpen,
         })}
       >
         {items.map((item) => {
@@ -64,9 +64,9 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
             <Link
               to={item.link()}
               key={item.name}
-              className={classNames(styles.menu__item, {
-                [styles.menu__item_active]: isActive,
-                [styles.menu__item_red]: item.red,
+              className={classNames(s.menu__item, {
+                [s.menu__item_active]: isActive,
+                [s.menu__item_red]: item.redText,
               })}
               onClick={() => setIsOpen(false)}
             >

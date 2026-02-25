@@ -7,6 +7,21 @@
 
     <title>e-commerce</title>
 
+    <script>
+      ;(function () {
+        try {
+          var theme = localStorage.getItem("app-theme") || "auto"
+          var prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+          ).matches
+          var resolved =
+            theme === "auto" ? (prefersDark ? "dark" : "light") : theme
+          document.documentElement.classList.add(resolved + "-theme")
+          document.documentElement.style.colorScheme = resolved
+        } catch (e) {}
+      })()
+    </script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
