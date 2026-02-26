@@ -1,0 +1,22 @@
+@use "styles/mixins";
+@use "styles/variables" as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-12;
+
+  @include mixins.media-max-width($breakpoint-s) {
+    gap: $spacing-8;
+    flex-wrap: wrap;
+  }
+
+  &__dots {
+    padding-block: calc(#{$spacing-12} + 2px);
+  }
+  &__btn {
+    padding: $spacing-8;
+    padding-bottom: calc(#{$spacing-4} - 2px);
+  }
+}

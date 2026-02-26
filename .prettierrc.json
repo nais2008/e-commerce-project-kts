@@ -12,8 +12,9 @@
   "importOrder": [
     "^react*",
     "<THIRD_PARTY_MODULES>",
-    "^@/components/(.*)$",
-    "^@/utils/(.*)$",
+    "^components/(.*)$",
+    "^pages/(.*)$",
+    "^utils/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

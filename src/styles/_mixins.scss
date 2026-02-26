@@ -1,0 +1,59 @@
+@use "./variables" as *;
+
+@mixin media-max-width($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin container($margin-block: 0) {
+  max-width: 1240px;
+  margin: $margin-block auto;
+  @content;
+
+  @include media-max-width($breakpoint-xl) {
+    padding-inline: $spacing-20;
+  }
+}
+
+@mixin gridContainer() {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, 320px);
+  justify-content: space-between;
+  gap: 80px 10px;
+  width: 100%;
+
+  @include media-max-width($breakpoint-xl) {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: $spacing-20;
+  }
+}
+
+@mixin fluid-font(
+  $min-size,
+  $max-size,
+  $min-width: $breakpoint-s,
+  $max-width: $breakpoint-xl
+) {
+  $slope: calc(($max-size - $min-size) / ($max-width - $min-width));
+  $intercept: $min-size - $slope * $min-width;
+
+  font-size: clamp(
+    #{$min-size},
+    calc(#{$intercept} + #{$slope * 100}vw),
+    #{$max-size}
+  );
+}
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
