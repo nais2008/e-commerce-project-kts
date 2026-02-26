@@ -1,5 +1,5 @@
 @use "styles/mixins";
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .view_title {
   @include mixins.fluid-font(32px, 44px);
@@ -34,15 +34,15 @@
 }
 
 .color_primary {
-  color: variables.$primary-color;
+  color: var(--primary-color);
 }
 
 .color_secondary {
-  color: variables.$secondary-color;
+  color: var(--secondary-color);
 }
 
 .color_accent {
-  color: variables.$accent-color;
+  color: var(--accent-color);
 }
 
 .ellipsis {
@@ -53,7 +53,7 @@
 
 .heading {
   &::selection {
-    background-color: variables.$accent-color-light;
-    color: variables.$primary-color;
+    background-color: var(--accent-color-light);
+    color: var(--primary-color);
   }
 }

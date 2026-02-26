@@ -13,14 +13,14 @@ const WelcomePage: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <div className={classNames(s.index, s.index__container)}>
+    <main className={classNames(s.index, s.index__container)}>
       <Heading view="title" tag="h1" className={s.index__title}>
         Welcome to <span>Lalasia</span>
       </Heading>
       <Button onClick={() => navigate(ROUTES.products.create())}>
         Go to products
       </Button>
-    </div>
+    </main>
   )
 }
 

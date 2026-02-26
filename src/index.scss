@@ -1,9 +1,25 @@
-@use "./styles/variables";
+@use "styles/themeColors";
+@use "styles/variables" as *;
+
+:root {
+  @include themeColors.theme-light;
+}
+:root.light-theme {
+  @include themeColors.theme-light;
+}
+:root.dark-theme {
+  @include themeColors.theme-dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include themeColors.theme-dark;
+  }
+}
 
 :root {
   color-scheme: light dark;
-  color: variables.$primary-color;
-  background-color: variables.$back-color;
+  color: var(--primary-color);
+  background-color: var(--back-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -12,8 +28,8 @@
 }
 
 .react-loading-skeleton {
-  --base-color: #{variables.$disabled-color};
-  --highlight-color: #{variables.$secondary-color};
+  --base-color: var(--disabled-color);
+  --highlight-color: var(--secondary-color);
 }
 
 * {
@@ -27,7 +43,7 @@
 
 a {
   text-decoration: none;
-  color: variables.$primary-color;
+  color: var(--primary-color);
 }
 
 html {

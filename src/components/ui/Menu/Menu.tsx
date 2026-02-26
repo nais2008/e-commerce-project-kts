@@ -25,11 +25,8 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
 
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
-  const [clientPath, setClientPath] = useState<string | null>(null)
 
   useEffect(() => {
-    setClientPath(pathname)
-
     if (!isOpen) return
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -58,7 +55,7 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
         })}
       >
         {items.map((item) => {
-          const isActive = clientPath && !!match(item.link())(clientPath ?? "")
+          const isActive = pathname && !!match(item.link())(pathname ?? "")
 
           return (
             <Link

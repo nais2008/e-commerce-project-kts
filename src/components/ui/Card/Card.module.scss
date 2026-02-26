@@ -1,13 +1,13 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: variables.$spacing-24;
-  background-color: variables.$back-color-second;
+  gap: $spacing-24;
+  background-color: var(--back-color-second);
   padding: 0;
-  padding-bottom: variables.$spacing-16;
-  border-radius: variables.$border-radius;
+  padding-bottom: $spacing-16;
+  border-radius: $border-radius;
   overflow: hidden;
   transition:
     box-shadow 0.2s,
@@ -17,13 +17,13 @@
 
   @media (hover: hover) {
     &:hover {
-      box-shadow: variables.$shadow;
+      box-shadow: var(--shadow);
       transform: scale(1.03);
     }
   }
   @media (hover: none) {
     &:active {
-      box-shadow: variables.$shadow;
+      box-shadow: var(--shadow);
       transform: scale(1.03);
     }
   }
@@ -32,13 +32,13 @@
     width: 100%;
     height: 350px;
     object-fit: cover;
-    background: variables.$secondary-color;
+    background: var(--secondary-color);
   }
   &__content {
     display: flex;
     flex-direction: column;
-    gap: variables.$spacing-20;
-    padding-inline: variables.$spacing-12;
+    gap: $spacing-20;
+    padding-inline: $spacing-12;
     flex: 1;
   }
   &__footer {
@@ -53,13 +53,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: variables.$spacing-8;
+    gap: $spacing-8;
   }
   &__captionSlot {
     line-height: 18px;
     display: flex;
     align-items: center;
-    gap: variables.$spacing-12;
+    gap: $spacing-12;
   }
   &__title {
     line-height: 24px;

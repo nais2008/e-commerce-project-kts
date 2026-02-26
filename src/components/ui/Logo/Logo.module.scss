@@ -1,11 +1,12 @@
-@use "styles/variables";
+@use "styles/variables" as *;
+@use "styles/mixins";
 
 .logo {
   display: flex;
   align-items: center;
-  gap: variables.$spacing-24;
+  gap: $spacing-24;
 
-  @media screen and (width < variables.$breakpoint-s) {
+  @include mixins.media-max-width($breakpoint-s) {
     &__title {
       display: none;
     }

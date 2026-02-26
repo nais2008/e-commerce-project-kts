@@ -1,36 +1,41 @@
-@use "./variables";
+@use "./variables" as *;
+
+@mixin media-max-width($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
 
 @mixin container($margin-block: 0) {
   max-width: 1240px;
   margin: $margin-block auto;
   @content;
 
-  @media screen and (width < variables.$breakpoint-xl) {
-    padding-inline: variables.$spacing-20;
+  @include media-max-width($breakpoint-xl) {
+    padding-inline: $spacing-20;
   }
 }
 
 @mixin gridContainer() {
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(auto-fit, 320px);
   justify-content: space-between;
   gap: 80px 10px;
   width: 100%;
 
-  @media screen and (width <= variables.$breakpoint-xl) {
-    & {
-      justify-content: center;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: variables.$spacing-20;
-    }
+  @include media-max-width($breakpoint-xl) {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: $spacing-20;
   }
 }
 
 @mixin fluid-font(
   $min-size,
   $max-size,
-  $min-width: variables.$breakpoint-s,
-  $max-width: variables.$breakpoint-xl
+  $min-width: $breakpoint-s,
+  $max-width: $breakpoint-xl
 ) {
   $slope: calc(($max-size - $min-size) / ($max-width - $min-width));
   $intercept: $min-size - $slope * $min-width;
@@ -47,8 +52,8 @@
   height: $size;
 }
 
-// @mixin media-max-width($breakpoint) {
-//   @media screen and (width <= $breakpoint) or (max-width: $breakpoint) {
-//     @content;
-//   }
-// }
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -2,8 +2,6 @@ import React from "react"
 import { Link, useNavigate, useParams } from "react-router"
 
 import { useQuery } from "@tanstack/react-query"
-import { isAxiosError } from "axios"
-import classNames from "classnames"
 import { ROUTES } from "constants/routes"
 import { ChevronLeft } from "lucide-react"
 import { getProductById } from "services/products"
@@ -35,31 +33,42 @@ const ProductPage: React.FC = () => {
 
   if (isPending)
     return (
-      <div className={classNames(s.product, s.product__container)}>
+      <main className={s.product__container}>
+        <Link
+          to="#"
+          className={s.product__linkPrev}
+          onClick={(e) => {
+            e.preventDefault()
+            navigate(-1)
+          }}
+        >
+          <ChevronLeft size={32} />
+          <Heading view="desc">Back</Heading>
+        </Link>
         <ProductDetailSkeleton />
-      </div>
+      </main>
     )
 
   if (error) {
-    if (isAxiosError(error) && error.response?.status === 404) {
+    if (error.message === "Not Found") {
       navigate(ROUTES.notFound.create(), { replace: true })
       return null
     }
 
     return (
-      <div className={classNames(s.product, s.product__container)}>
+      <main className={s.product__container}>
         <ErrorMessage errorMess={"An error has occurred: " + error.message} />
         <Button onClick={() => refetch()} className={s.retryButton}>
           Try Again
         </Button>
-      </div>
+      </main>
     )
   }
 
   const data = rawData.data
 
   return (
-    <div className={classNames(s.product, s.product__container)}>
+    <main className={s.product__container}>
       <Link
         to="#"
         className={s.product__linkPrev}
@@ -76,7 +85,7 @@ const ProductPage: React.FC = () => {
         <InfoProduct data={data} />
       </div>
       <List categoryId={data.productCategory.id} />
-    </div>
+    </main>
   )
 }
 

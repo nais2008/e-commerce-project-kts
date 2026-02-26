@@ -1,9 +1,4 @@
-@use "styles/variables";
-
-main:has(.notFound) {
-  display: flex;
-  justify-content: center;
-}
+@use "styles/variables" as *;
 
 .notFound {
   display: flex;
@@ -13,7 +8,7 @@ main:has(.notFound) {
   justify-content: center;
   text-align: center;
   min-height: 100%;
-  padding-inline: variables.$spacing-8;
+  padding-inline: $spacing-8;
 
   &__title {
     font-size: 80px;

@@ -1,36 +1,34 @@
-@use "styles/variables";
+@use "styles/mixins";
+@use "styles/variables" as *;
 
-.wrapper {
+.productDetail {
   display: grid;
   grid-template-columns: 5fr 7fr;
-  gap: variables.$spacing-40;
+  gap: $spacing-40;
   justify-content: space-between;
 
-  @media screen and (width <= variables.$breakpoint-l) {
+  @include mixins.media-max-width($breakpoint-l) {
     grid-template-columns: 1fr;
   }
-}
 
-.image {
-  width: 100%;
-  height: 500px;
-}
-
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: variables.$spacing-20;
-}
-
-.description {
-  display: flex;
-  flex-direction: column;
-  gap: variables.$spacing-8;
-}
-
-.buttons {
-  display: flex;
-  gap: variables.$spacing-16;
-  margin-top: 12px;
+  &__image {
+    width: 100%;
+    height: 500px;
+  }
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-20;
+  }
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-8;
+  }
+  &__buttons {
+    display: flex;
+    gap: $spacing-16;
+    margin-top: 12px;
+  }
 }

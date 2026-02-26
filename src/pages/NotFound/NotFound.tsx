@@ -12,7 +12,7 @@ import s from "./NotFound.module.scss"
 const NotFound: React.FC = () => {
   return (
     <Layout>
-      <div className={s.notFound}>
+      <main className={s.notFound}>
         <Heading tag="h1" view="title" className={s.notFound__title}>
           404 :(
         </Heading>
@@ -22,7 +22,7 @@ const NotFound: React.FC = () => {
         <Link to={ROUTES.main.create()} className={s.notFound__link}>
           <ArrowLeft size={20} /> Back to home
         </Link>
-      </div>
+      </main>
     </Layout>
   )
 }

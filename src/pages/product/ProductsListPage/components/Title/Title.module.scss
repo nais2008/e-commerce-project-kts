@@ -1,4 +1,4 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .title {
   display: flex;
@@ -10,6 +10,6 @@
     align-items: center;
     text-align: center;
     flex-direction: column;
-    gap: variables.$spacing-20;
+    gap: $spacing-20;
   }
 }

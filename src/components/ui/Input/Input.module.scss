@@ -1,50 +1,50 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .input {
   &__wrapper {
     overflow: hidden;
     display: flex;
     align-items: center;
-    gap: variables.$spacing-8;
-    padding-inline: variables.$spacing-16;
+    gap: $spacing-8;
+    padding-inline: $spacing-16;
     outline: none;
-    background-color: variables.$back-color-second;
-    border-radius: variables.$border-radius;
-    border: 1px solid variables.$back-color-second;
+    background-color: var(--back-color-second);
+    border-radius: $border-radius;
+    border: 1px solid var(--back-color-second);
     transition:
       box-shadow 0.2s,
       border-color 0.2s;
 
     @media (hover: hover) {
       &:hover:not(:has(input:disabled)) {
-        box-shadow: variables.$shadow;
+        box-shadow: var(--shadow);
       }
     }
     &:focus-within {
-      border-color: variables.$accent-color;
-      box-shadow: variables.$shadow;
+      border-color: var(--accent-color);
+      box-shadow: var(--shadow);
     }
     &:has(input:disabled) {
-      background-color: variables.$disabled-color;
-      border-color: variables.$disabled-color;
+      background-color: var(--disabled-color);
+      border-color: var(--disabled-color);
       cursor: not-allowed;
     }
   }
 
   &__field {
-    padding-block: variables.$spacing-12;
+    padding-block: $spacing-12;
     width: 100%;
     font-size: 16px;
     outline: none;
     border: none;
-    color: variables.$primary-color;
+    color: var(--primary-color);
     background-color: transparent;
 
     &::placeholder {
-      color: variables.$secondary-color;
+      color: var(--secondary-color);
     }
     &:disabled {
-      color: variables.$secondary-color;
+      color: var(--secondary-color);
       cursor: not-allowed;
     }
   }

@@ -1,15 +1,15 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 @use "styles/mixins";
 
-$arrow-color: #{variables.$back-color-second};
-$arrow-color-back: #{variables.$primary-color};
+$arrow-color: var(--back-color-second);
+$arrow-color-back: var(--primary-color);
 
 .slider {
   position: relative;
   width: clamp(320px, 100%, 100%);
   height: auto;
   overflow: hidden;
-  border-radius: variables.$border-radius;
+  border-radius: $border-radius;
 
   :global(.swiper-wrapper) {
     height: fit-content;
@@ -37,7 +37,7 @@ $arrow-color-back: #{variables.$primary-color};
     background: $arrow-color-back;
     color: $arrow-color;
     cursor: pointer;
-    z-index: variables.$z-index-10;
+    z-index: $z-index-10;
     transition: opacity 0.2s;
 
     &:hover:not(:disabled) {

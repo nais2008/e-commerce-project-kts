@@ -1,16 +1,12 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 @use "styles/mixins";
 
 .footer {
   margin-top: 20px;
-  background-color: variables.$back-color-second;
-  padding-block: variables.$spacing-20;
+  background-color: var(--back-color-second);
+  padding-block: $spacing-20;
   border-top: 2px solid
-    color-mix(
-      in srgb,
-      variables.$secondary-color,
-      variables.$back-color-second 80%
-    );
+    color-mix(in srgb, var(--secondary-color), var(--back-color-second) 80%);
 
   &__container {
     @include mixins.container {
@@ -18,20 +14,20 @@
       align-items: center;
       justify-content: space-between;
 
-      @media screen and (width <= variables.$breakpoint-m) {
+      @include mixins.media-max-width($breakpoint-m) {
         flex-direction: column;
-        gap: variables.$spacing-40;
+        gap: $spacing-40;
       }
     }
   }
   &__navigate {
     display: flex;
     flex-direction: column;
-    gap: variables.$spacing-12;
+    gap: $spacing-12;
 
-    @media screen and (width <= variables.$breakpoint-m) {
+    @include mixins.media-max-width($breakpoint-m) {
       align-items: center;
-      gap: variables.$spacing-12;
+      gap: $spacing-12;
     }
   }
 }

@@ -1,19 +1,12 @@
 @use "styles/mixins";
-@use "styles/variables";
-
-main:has(.index) {
-  display: flex;
-  align-items: center;
-}
+@use "styles/variables" as *;
 
 .index {
-  display: flex;
+  @include mixins.center;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
-  margin: variables.$spacing-20 0;
+  margin: $spacing-20 0;
   width: 100%;
-  height: 100%;
 
   &__container {
     @include mixins.container;
@@ -23,7 +16,7 @@ main:has(.index) {
     width: 320px;
 
     span {
-      color: variables.$accent-color-light;
+      color: var(--accent-color-light);
     }
   }
 }

@@ -1,13 +1,13 @@
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .btn {
-  background: variables.$accent-color;
+  background: var(--accent-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: variables.$spacing-8;
-  padding: variables.$spacing-16 variables.$spacing-20;
-  color: variables.$text-color-static;
+  gap: $spacing-8;
+  padding: $spacing-16 $spacing-20;
+  color: $text-color-static;
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
@@ -15,35 +15,35 @@
     background 0.2s,
     border-color 0.2s,
     color 0.2s;
-  border-radius: variables.$border-radius;
+  border-radius: $border-radius;
 
   &__loader {
-    border-color: variables.$text-color-static;
+    border-color: $text-color-static;
     border-right-color: transparent;
   }
 
   &_primary {
-    background-color: variables.$back-color-second;
-    border-color: variables.$primary-color;
-    color: variables.$primary-color;
+    background-color: var(--back-color-second);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
   }
 
   @media (hover: hover) {
     &:not(&:disabled):hover {
-      background: variables.$accent-color-light;
-      color: variables.$text-color-static;
+      background: var(--accent-color-light);
+      color: $text-color-static;
       border-color: transparent;
     }
   }
   &:not(&:disabled):active {
-    background-color: variables.$accent-color-dark;
-    color: variables.$text-color-static;
+    background-color: var(--accent-color-dark);
+    color: $text-color-static;
     border-color: transparent;
   }
 
   &:disabled {
-    background: variables.$disabled-color;
-    color: variables.$secondary-color;
+    background: var(--disabled-color);
+    color: var(--secondary-color);
     cursor: not-allowed;
     border-color: transparent;
   }

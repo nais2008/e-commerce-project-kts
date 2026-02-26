@@ -1,23 +1,8 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 
-export type ThemeValue = "light" | "dark" | "auto"
+import { ThemeContext, type ThemeValue } from "./theme"
 
-export const STORAGE_KEY = "app-theme"
-
-interface ThemeContextType {
-  theme: ThemeValue
-  setTheme: (value: ThemeValue) => void
-  resolvedTheme: "light" | "dark"
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const STORAGE_KEY = "app-theme"
 
 const getSystemTheme = (): "light" | "dark" => {
   if (
@@ -90,14 +75,4 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   )
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-}
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext)
-
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider")
-  }
-
-  return context
 }

@@ -1,16 +1,12 @@
 @use "styles/mixins";
-@use "styles/variables";
+@use "styles/variables" as *;
 
 .header {
   width: 100%;
-  background-color: variables.$back-color-second;
-  padding-block: variables.$spacing-12;
+  background-color: var(--back-color-second);
+  padding-block: $spacing-12;
   border-bottom: 2px solid
-    color-mix(
-      in srgb,
-      variables.$secondary-color,
-      variables.$back-color-second 80%
-    );
+    color-mix(in srgb, var(--secondary-color), var(--back-color-second) 80%);
 
   &__container {
     @include mixins.container() {
@@ -32,16 +28,16 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    gap: variables.$spacing-12;
+    gap: $spacing-12;
 
-    @media screen and (width < variables.$breakpoint-s) {
+    @include mixins.media-max-width($breakpoint-s) {
       flex-direction: column;
     }
   }
   &__icons {
     display: flex;
     align-items: center;
-    gap: variables.$spacing-12;
+    gap: $spacing-12;
     cursor: pointer;
   }
 }
