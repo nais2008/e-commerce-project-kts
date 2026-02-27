@@ -1,7 +1,6 @@
 import React from "react"
 
-import { ReactQueryProvider } from "api/provider"
-
+import ReactQueryProvider from "./ReactQueryProvider"
 import { ThemeProvider } from "./ThemeProvider"
 
 interface HeadProviderProps {
