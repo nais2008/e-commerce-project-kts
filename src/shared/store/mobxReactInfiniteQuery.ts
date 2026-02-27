@@ -1,79 +1,80 @@
 import {
   type DefaultError,
+  type DefaultedInfiniteQueryObserverOptions,
+  type InfiniteData,
+  InfiniteQueryObserver,
+  type InfiniteQueryObserverOptions,
   QueryClient,
   type QueryKey,
-  QueryObserver,
-  type QueryObserverOptions,
 } from "@tanstack/query-core"
-import { computed, createAtom, makeObservable, reaction } from "mobx"
+import { createAtom, makeObservable, reaction } from "mobx"
 
-export class MobxQuery<
+export class MobxReactInfiniteQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
-  TData = TQueryFnData,
-  TQueryData = TQueryFnData,
+  TData = InfiniteData<TQueryFnData>,
   TQueryKey extends QueryKey = QueryKey,
+  TPageParam = unknown,
 > {
   private atom = createAtom(
-    "MobxQuery",
+    "MobxReactInfiniteQuery",
     () => this.startTracking(),
     () => this.stopTracking()
   )
-
   private queryClient: QueryClient
-  private getOptions: () => QueryObserverOptions<
+  private getOptions: () => InfiniteQueryObserverOptions<
     TQueryFnData,
     TError,
     TData,
-    TQueryData,
-    TQueryKey
+    TQueryKey,
+    TPageParam
   >
-
-  private queryObserver: QueryObserver<
+  private queryObserver: InfiniteQueryObserver<
     TQueryFnData,
     TError,
     TData,
-    TQueryData,
-    TQueryKey
+    TQueryKey,
+    TPageParam
   >
 
   constructor(
-    getOptions: () => QueryObserverOptions<
+    getOptions: () => InfiniteQueryObserverOptions<
       TQueryFnData,
       TError,
       TData,
-      TQueryData,
-      TQueryKey
+      TQueryKey,
+      TPageParam
     >,
     queryClient: QueryClient
   ) {
     this.queryClient = queryClient
     this.getOptions = getOptions
-
-    this.queryObserver = new QueryObserver(
+    this.queryObserver = new InfiniteQueryObserver(
       this.queryClient,
       this.defaultQueryOptions
     )
-
-    makeObservable(this, {
-      data: computed,
-    })
+    makeObservable(this, {})
   }
 
   get result() {
     this.atom.reportObserved()
-
     return this.queryObserver.getOptimisticResult(this.defaultQueryOptions)
   }
 
-  get data(): TData {
-    const data = this.result.data
+  fetchNextPage() {
+    return this.queryObserver.fetchNextPage()
+  }
 
-    if (!data) {
-      throw this.queryObserver.fetchOptimistic(this.defaultQueryOptions)
-    }
+  fetchPreviousPage() {
+    return this.queryObserver.fetchPreviousPage()
+  }
 
-    return data
+  hasNextPage() {
+    return this.result.hasNextPage
+  }
+
+  hasPreviousPage() {
+    return this.result.hasPreviousPage
   }
 
   private unsubscribe = () => {}
@@ -84,22 +85,26 @@ export class MobxQuery<
         this.queryObserver.setOptions(this.defaultQueryOptions)
       }
     )
-
     const unsubscribeObserver = this.queryObserver.subscribe(() => {
       this.atom.reportChanged()
     })
-
     this.unsubscribe = () => {
       unsubscribeReaction()
       unsubscribeObserver()
     }
   }
-
   stopTracking() {
     this.unsubscribe()
   }
-
   private get defaultQueryOptions() {
-    return this.queryClient.defaultQueryOptions(this.getOptions())
+    return this.queryClient.defaultQueryOptions(
+      this.getOptions()
+    ) as DefaultedInfiniteQueryObserverOptions<
+      TQueryFnData,
+      TError,
+      TData,
+      TQueryKey,
+      TPageParam
+    >
   }
 }

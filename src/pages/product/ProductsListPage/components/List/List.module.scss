@@ -9,6 +9,7 @@
 
   &__items {
     @include mixins.gridContainer();
+    overflow: visible !important;
   }
   &__title {
     display: flex;
@@ -16,5 +17,9 @@
   }
   &__totalProducts {
     vertical-align: text-top;
+  }
+  &__endMessage {
+    grid-column: 1 / -1;
+    text-align: center;
   }
 }

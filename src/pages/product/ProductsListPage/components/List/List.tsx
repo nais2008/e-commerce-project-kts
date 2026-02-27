@@ -1,84 +1,110 @@
 import React from "react"
+import InfiniteScroll from "react-infinite-scroll-component"
 import Skeleton from "react-loading-skeleton"
 import { useSearchParams } from "react-router"
 
-import { useQuery } from "@tanstack/react-query"
-import classNames from "classnames"
-import { getProducts } from "services/products"
+import { useDebounce } from "hooks/useDebounce"
+import { useLocalStore } from "hooks/useLocalStore"
+import { observer } from "mobx-react-lite"
+import ProductListStore from "store/ProductListStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Heading from "components/ui/Heading"
-import ListItems from "components/ui/ListItems"
-import Pagination from "components/ui/Pagination"
+import Input from "components/ui/Input"
+import ProductCard from "components/ui/ProductCard"
 import CardSkeleton from "components/ui/skeletons/CardSkeleton"
 
 import s from "./List.module.scss"
 
-const List: React.FC = () => {
+const List: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const page = Number(searchParams.get("page")) || 1
+  const store = useLocalStore(() => new ProductListStore())
 
-  const { isPending, isFetching, error, data, refetch } = useQuery({
-    queryKey: ["products", page],
-    queryFn: () => getProducts(page),
-  })
+  React.useEffect(() => {
+    const searchFromUrl = searchParams.get("search") ?? ""
+    store.setSearch(searchFromUrl)
+  }, [searchParams, store])
 
-  const handlePageChange = (newPage: number) => {
-    setSearchParams({ page: newPage.toString() })
-  }
+  const debouncedSearch = useDebounce(store.search)
 
-  if (isPending)
-    return (
-      <section className={s.list}>
-        <Heading view="subtitle" tag="h2" className={s.list__title}>
-          Total products <Skeleton width={30} />
-        </Heading>
-        <div className={s.list__items}>
-          {[...Array(9)].map((_, i) => (
-            <CardSkeleton key={i} />
-          ))}
-        </div>
-      </section>
+  React.useEffect(() => {
+    if (debouncedSearch) {
+      setSearchParams({ search: debouncedSearch })
+    } else {
+      setSearchParams({})
+    }
+
+    store.setSearch(debouncedSearch)
+  }, [debouncedSearch, setSearchParams, store])
+
+  const productsMessage =
+    store.totalProducts > 0 ? (
+      <Heading tag="p" weight="medium" className={s.list__endMessage}>
+        🎉 All products have been loaded
+      </Heading>
+    ) : (
+      <Heading tag="p" weight="medium" className={s.list__endMessage}>
+        No products :(
+      </Heading>
     )
 
-  if (error)
-    return (
-      <div className={classNames(s.list)}>
-        <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={s.retryButton}>
-          Try Again
-        </Button>
-      </div>
-    )
+  const loaders = [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
 
-  const dataArr = data?.data
-  const pagination = data?.meta?.pagination
+  const errorMessage = (
+    <>
+      <ErrorMessage
+        errorMess={"An error has occurred: " + store.error?.message}
+      />
+      <Button onClick={() => store.refetch()} className={s.retryButton}>
+        Try Again
+      </Button>
+    </>
+  )
 
   return (
     <section className={s.list}>
+      <Input
+        type="search"
+        placeholder="Search products..."
+        value={store.search}
+        onChange={store.setSearch}
+      />
+
       <Heading view="subtitle" tag="h2" className={s.list__title}>
         Total products
-        <Heading
-          tag="span"
-          color="accent"
-          view="paragraph"
-          className={s.list__totalProducts}
-        >
-          {pagination.total}
-        </Heading>
+        {store.isLoading ? (
+          <Skeleton width={30} />
+        ) : (
+          <Heading
+            tag="span"
+            color="accent"
+            view="paragraph"
+            className={s.list__totalProducts}
+          >
+            {store.totalProducts}
+          </Heading>
+        )}
       </Heading>
-      <ListItems items={dataArr} className={s.list__items} />
-      {pagination && pagination.pageCount > 1 && (
-        <Pagination
-          page={page}
-          pageCount={pagination.pageCount}
-          onPageChange={handlePageChange}
-          isFetching={isFetching}
-        />
-      )}
+
+      {store.isLoading && <div className={s.list__items}>{loaders}</div>}
+      {store.error && errorMessage}
+
+      <InfiniteScroll
+        dataLength={store.products.length}
+        next={() => store.loadMore()}
+        hasMore={store.hasNextPage}
+        loader={loaders}
+        scrollThreshold={0.9}
+        className={s.list__items}
+        endMessage={productsMessage}
+      >
+        {store.products.map((product, index) => (
+          <ProductCard product={product} key={index} />
+        ))}
+      </InfiniteScroll>
     </section>
   )
-}
+})
 
 export default List
