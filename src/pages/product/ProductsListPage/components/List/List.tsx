@@ -21,22 +21,28 @@ const List: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams()
   const store = useLocalStore(() => new ProductListStore())
 
-  React.useEffect(() => {
-    const searchFromUrl = searchParams.get("search") ?? ""
-    store.setSearch(searchFromUrl)
-  }, [searchParams, store])
-
-  const debouncedSearch = useDebounce(store.search)
+  const [inputValue, setInputValue] = React.useState(
+    searchParams.get("search") ?? ""
+  )
+  const debouncedInput = useDebounce(inputValue)
 
   React.useEffect(() => {
-    if (debouncedSearch) {
-      setSearchParams({ search: debouncedSearch })
-    } else {
-      setSearchParams({})
+    const urlSearch = searchParams.get("search") ?? ""
+    store.setSearch(urlSearch)
+    setInputValue(urlSearch)
+  }, [searchParams, store, setInputValue])
+
+  React.useEffect(() => {
+    const currentUrlSearch = searchParams.get("search") ?? ""
+
+    if (debouncedInput !== currentUrlSearch) {
+      if (debouncedInput) {
+        setSearchParams({ search: debouncedInput })
+      } else {
+        setSearchParams({})
+      }
     }
-
-    store.setSearch(debouncedSearch)
-  }, [debouncedSearch, setSearchParams, store])
+  }, [debouncedInput, searchParams, setSearchParams])
 
   const productsMessage =
     store.totalProducts > 0 ? (
@@ -67,8 +73,8 @@ const List: React.FC = observer(() => {
       <Input
         type="search"
         placeholder="Search products..."
-        value={store.search}
-        onChange={store.setSearch}
+        value={inputValue}
+        onChange={setInputValue}
       />
 
       <Heading view="subtitle" tag="h2" className={s.list__title}>
@@ -99,8 +105,8 @@ const List: React.FC = observer(() => {
         className={s.list__items}
         endMessage={productsMessage}
       >
-        {store.products.map((product, index) => (
-          <ProductCard product={product} key={index} />
+        {store.products.map((product) => (
+          <ProductCard product={product} key={product.id} />
         ))}
       </InfiniteScroll>
     </section>

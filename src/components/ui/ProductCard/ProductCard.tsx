@@ -15,12 +15,21 @@ type Props = {
 const ProductCard: React.FC<Props> = ({ product }) => {
   const navigate = useNavigate()
 
+  const handleCardClick = () => {
+    navigate(ROUTES.product.create(product.documentId))
+  }
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    console.log("Добавили в корзину:", product.id)
+  }
+
   return (
     <Card
       key={product.id}
       title={product.title}
       subtitle={product.description}
-      onClick={() => navigate(ROUTES.product.create(product.documentId))}
+      onClick={handleCardClick}
       contentSlot={
         <DiscountPrice
           price={product.price}
@@ -29,7 +38,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       }
       image={product.images[0].formats.small.url}
       captionSlot={product.productCategory.title}
-      actionSlot={<Button>Add to card</Button>}
+      actionSlot={<Button onClick={handleButtonClick}>Add to card</Button>}
     />
   )
 }

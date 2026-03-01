@@ -7,7 +7,7 @@ import {
 } from "@tanstack/query-core"
 import { computed, createAtom, makeObservable, reaction } from "mobx"
 
-export class MobxQuery<
+class MobxQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = TQueryFnData,
@@ -103,3 +103,5 @@ export class MobxQuery<
     return this.queryClient.defaultQueryOptions(this.getOptions())
   }
 }
+
+export default MobxQuery

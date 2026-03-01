@@ -2,7 +2,11 @@ import { queryClient } from "api/reactQuery"
 import { action, computed, makeObservable, observable } from "mobx"
 import { getProducts } from "services/products"
 import type { ILocalStore } from "shared/interface/localStore.interface"
-import { MobxReactInfiniteQuery } from "shared/store"
+import {
+  linearizeCollection,
+  normalizeCollection,
+} from "shared/type/collection.type"
+import MobxInfiniteQuery from "store/globals/mobxInfiniteQuery"
 
 const PAGE_SIZE = 9
 type PrivateFields = "_productListQuery"
@@ -10,15 +14,22 @@ type PrivateFields = "_productListQuery"
 class ProductListStore implements ILocalStore {
   search = ""
 
-  private _productListQuery = new MobxReactInfiniteQuery(
+  private _productListQuery = new MobxInfiniteQuery(
     () => ({
       queryKey: ["products", this.search],
-      queryFn: ({ pageParam = 1 }) =>
-        getProducts(pageParam, PAGE_SIZE, this.search),
+      queryFn: async ({ pageParam = 1 }) => {
+        const response = await getProducts(pageParam, PAGE_SIZE, this.search)
+
+        return {
+          ...response,
+          data: normalizeCollection(response.data, (product) => product.id),
+        }
+      },
       initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage = allPages.length + 1
-        return lastPage.data.length === PAGE_SIZE ? nextPage : undefined
+      getNextPageParam: (lastPage) => {
+        const { page, pageCount } = lastPage.meta.pagination
+
+        return page < pageCount ? page + 1 : undefined
       },
       getPreviousPageParam: (_, allPages) => {
         const prevPage = allPages.length - 1
@@ -58,10 +69,9 @@ class ProductListStore implements ILocalStore {
   }
 
   get products() {
-    return (
-      this._productListQuery.result.data?.pages.flatMap((page) => page.data) ??
-      []
-    )
+    const pages = this._productListQuery.result.data?.pages ?? []
+
+    return pages.flatMap((page) => linearizeCollection(page.data))
   }
 
   get isLoading() {

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/query-core"
 import { createAtom, makeObservable, reaction } from "mobx"
 
-export class MobxReactInfiniteQuery<
+class MobxInfiniteQuery<
   TQueryFnData = unknown,
   TError = DefaultError,
   TData = InfiniteData<TQueryFnData>,
@@ -17,7 +17,7 @@ export class MobxReactInfiniteQuery<
   TPageParam = unknown,
 > {
   private atom = createAtom(
-    "MobxReactInfiniteQuery",
+    "MobxInfiniteQuery",
     () => this.startTracking(),
     () => this.stopTracking()
   )
@@ -108,3 +108,5 @@ export class MobxReactInfiniteQuery<
     >
   }
 }
+
+export default MobxInfiniteQuery

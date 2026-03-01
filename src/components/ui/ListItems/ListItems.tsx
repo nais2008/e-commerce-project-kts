@@ -13,7 +13,7 @@ const ListItems: React.FC<Props> = ({ className, items }) => {
   return (
     <div className={className}>
       {items.map((item) => (
-        <ProductCard product={item} />
+        <ProductCard product={item} key={item.id} />
       ))}
     </div>
   )
