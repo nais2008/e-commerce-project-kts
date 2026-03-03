@@ -12,7 +12,8 @@ const PAGE_SIZE = 9
 export async function getProducts(
   page: number,
   pageSize: number = PAGE_SIZE,
-  search: string = ""
+  search: string = "",
+  categoryId?: number
 ) {
   const queryParams = {
     populate: ["images", "productCategory"],
@@ -20,13 +21,10 @@ export async function getProducts(
       page: page,
       pageSize: pageSize,
     },
-    filters: search
-      ? {
-          title: {
-            $containsi: search,
-          },
-        }
-      : undefined,
+    filters: {
+      ...(search ? { title: { $containsi: search } } : {}),
+      ...(categoryId ? { productCategory: { id: { $eq: categoryId } } } : {}),
+    },
   }
   const queryString = qs.stringify(queryParams, {
     encode: false,

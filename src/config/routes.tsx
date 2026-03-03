@@ -5,6 +5,7 @@ import HeadProvider from "providers/HeadProvider"
 
 import NotFound from "pages/NotFound"
 import WelcomePage from "pages/WelcomePage"
+import CategoriesList from "pages/categories/CategoriesList"
 import ProductPage from "pages/product/ProductPage"
 import ProductsListPage from "pages/product/ProductsListPage"
 
@@ -26,6 +27,10 @@ export const routesConfig: RouteObject[] = [
       {
         path: ROUTES.product.mask,
         element: <ProductPage />,
+      },
+      {
+        path: ROUTES.categories.mask,
+        element: <CategoriesList />,
       },
     ],
   },

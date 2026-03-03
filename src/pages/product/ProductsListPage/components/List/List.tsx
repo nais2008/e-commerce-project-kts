@@ -3,7 +3,6 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import Skeleton from "react-loading-skeleton"
 import { useSearchParams } from "react-router"
 
-import { useDebounce } from "hooks/useDebounce"
 import { useLocalStore } from "hooks/useLocalStore"
 import { observer } from "mobx-react-lite"
 import ProductListStore from "store/ProductListStore"
@@ -11,49 +10,24 @@ import ProductListStore from "store/ProductListStore"
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
 import Heading from "components/ui/Heading"
-import Input from "components/ui/Input"
 import ProductCard from "components/ui/ProductCard"
 import CardSkeleton from "components/ui/skeletons/CardSkeleton"
 
+import Filters from "../Filters"
 import s from "./List.module.scss"
 
 const List: React.FC = observer(() => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const store = useLocalStore(() => new ProductListStore())
 
-  const [inputValue, setInputValue] = React.useState(
-    searchParams.get("search") ?? ""
-  )
-  const debouncedInput = useDebounce(inputValue)
+  const search = searchParams.get("search") ?? ""
+  const category = searchParams.get("category")
+  const categoryId = category ? Number(category) : undefined
 
   React.useEffect(() => {
-    const urlSearch = searchParams.get("search") ?? ""
-    store.setSearch(urlSearch)
-    setInputValue(urlSearch)
-  }, [searchParams, store, setInputValue])
-
-  React.useEffect(() => {
-    const currentUrlSearch = searchParams.get("search") ?? ""
-
-    if (debouncedInput !== currentUrlSearch) {
-      if (debouncedInput) {
-        setSearchParams({ search: debouncedInput })
-      } else {
-        setSearchParams({})
-      }
-    }
-  }, [debouncedInput, searchParams, setSearchParams])
-
-  const productsMessage =
-    store.totalProducts > 0 ? (
-      <Heading tag="p" weight="medium" className={s.list__endMessage}>
-        🎉 All products have been loaded
-      </Heading>
-    ) : (
-      <Heading tag="p" weight="medium" className={s.list__endMessage}>
-        No products :(
-      </Heading>
-    )
+    store.setSearch(search)
+    store.setCategoryId(categoryId ?? undefined)
+  }, [search, categoryId, store])
 
   const loaders = [...Array(6)].map((_, i) => <CardSkeleton key={i} />)
 
@@ -68,14 +42,20 @@ const List: React.FC = observer(() => {
     </>
   )
 
+  const productsMessage =
+    store.totalProducts > 0 ? (
+      <Heading tag="p" weight="medium" className={s.list__endMessage}>
+        🎉 All products have been loaded
+      </Heading>
+    ) : (
+      <Heading tag="p" weight="medium" className={s.list__endMessage}>
+        No products :(
+      </Heading>
+    )
+
   return (
     <section className={s.list}>
-      <Input
-        type="search"
-        placeholder="Search products..."
-        value={inputValue}
-        onChange={setInputValue}
-      />
+      <Filters />
 
       <Heading view="subtitle" tag="h2" className={s.list__title}>
         Total products

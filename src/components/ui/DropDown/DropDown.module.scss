@@ -9,9 +9,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    flex: 1;
     cursor: pointer;
     padding: $spacing-8 $spacing-12;
-    background: var(--back-color);
+    background: var(--back-color-second);
     border-radius: $border-radius;
     height: 100%;
   }
@@ -25,7 +26,7 @@
     background: var(--back-color-second);
     border-radius: $border-radius;
     border: 1px solid var(--back-color);
-    z-index: 10;
+    z-index: $z-index-20;
     overflow: hidden;
     box-shadow: var(--shadow);
     opacity: 0;

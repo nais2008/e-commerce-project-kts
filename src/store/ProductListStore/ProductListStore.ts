@@ -13,12 +13,19 @@ type PrivateFields = "_productListQuery"
 
 class ProductListStore implements ILocalStore {
   search = ""
+  categoryId: number | undefined = undefined
+  pageSize: number = PAGE_SIZE
 
   private _productListQuery = new MobxInfiniteQuery(
     () => ({
-      queryKey: ["products", this.search],
+      queryKey: ["products", this.search, this.categoryId, this.pageSize],
       queryFn: async ({ pageParam = 1 }) => {
-        const response = await getProducts(pageParam, PAGE_SIZE, this.search)
+        const response = await getProducts(
+          pageParam,
+          this.pageSize,
+          this.search,
+          this.categoryId
+        )
 
         return {
           ...response,
@@ -43,6 +50,8 @@ class ProductListStore implements ILocalStore {
     makeObservable<ProductListStore, PrivateFields>(this, {
       _productListQuery: observable.ref,
       search: observable,
+      pageSize: observable,
+      categoryId: observable,
       products: computed,
       isLoading: computed,
       hasNextPage: computed,
@@ -50,12 +59,21 @@ class ProductListStore implements ILocalStore {
       error: computed,
       loadMore: action,
       setSearch: action,
+      setCategoryId: action,
       refetch: action,
     })
   }
 
   setSearch = (newSearch: string) => {
     this.search = newSearch
+  }
+
+  setCategoryId = (newCategoryId: number | undefined) => {
+    this.categoryId = newCategoryId
+  }
+
+  setPageSize = (newPageSize: number) => {
+    this.pageSize = newPageSize
   }
 
   refetch() {

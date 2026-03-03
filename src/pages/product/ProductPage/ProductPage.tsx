@@ -49,7 +49,7 @@ const ProductPage: React.FC = observer(() => {
       {store.error && (
         <>
           <ErrorMessage
-            errorMess={`An error has occurred: ${store.error?.message}`}
+            errorMess={`An error has occurred: ${store.error.message}`}
           />
           <Button onClick={() => store.refetch()} className={s.retryButton}>
             Try Again

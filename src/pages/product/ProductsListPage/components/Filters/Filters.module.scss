@@ -1,0 +1,19 @@
+@use "styles/variables" as *;
+@use "styles/mixins";
+
+.filters {
+  display: flex;
+  gap: $spacing-12;
+  width: 100%;
+
+  @include mixins.media-max-width($breakpoint-s) {
+    flex-direction: column;
+  }
+
+  :first-child {
+    flex: 1;
+  }
+  &__dropDown {
+    height: 100%;
+  }
+}
