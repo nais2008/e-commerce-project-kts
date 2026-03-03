@@ -16,6 +16,7 @@ type DropDownProps = {
   value: string
   onChange: (value: string) => void
   className?: string
+  isBackSecond?: boolean
 }
 
 const DropDown: React.FC<DropDownProps> = ({
@@ -23,6 +24,7 @@ const DropDown: React.FC<DropDownProps> = ({
   value,
   onChange,
   className,
+  isBackSecond,
 }) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
@@ -66,7 +68,10 @@ const DropDown: React.FC<DropDownProps> = ({
   return (
     <div className={classNames(s.dropDown, className)} ref={selectRef}>
       <div
-        className={s.dropDown__btn}
+        className={classNames(
+          s.dropDown__btn,
+          isBackSecond && s.dropDown__btn_second
+        )}
         onClick={() => setIsOpen(!isOpen)}
         tabIndex={0}
       >

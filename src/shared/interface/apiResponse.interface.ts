@@ -1,3 +1,5 @@
+import type { IUser } from "./user.interface"
+
 export interface ApiResponse<T> {
   data: T
   meta: {
@@ -17,5 +19,19 @@ export interface ApiErrorResponse {
     name: string
     message: string
     details?: unknown
+  }
+}
+
+export interface AuthResponse {
+  jwt: string
+  user: IUser
+}
+
+export interface AuthErrorResponse {
+  error: {
+    status: number
+    name: string
+    message: string
+    details: unknown
   }
 }

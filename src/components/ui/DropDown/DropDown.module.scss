@@ -15,6 +15,10 @@
     background: var(--back-color-second);
     border-radius: $border-radius;
     height: 100%;
+
+    &_second {
+      background: var(--back-color);
+    }
   }
   &__options {
     position: absolute;

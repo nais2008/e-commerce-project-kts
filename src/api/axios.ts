@@ -24,3 +24,15 @@ apiClient.interceptors.response.use(
     return Promise.reject(new Error(message))
   }
 )
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("jwt")
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default apiClient

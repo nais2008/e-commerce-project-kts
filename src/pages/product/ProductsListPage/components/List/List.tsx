@@ -5,6 +5,8 @@ import { useSearchParams } from "react-router"
 
 import { useLocalStore } from "hooks/useLocalStore"
 import { observer } from "mobx-react-lite"
+import { useAuthStore } from "providers/AuthProvider"
+import { useCartStore } from "providers/CartProvider"
 import ProductListStore from "store/ProductListStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
@@ -23,6 +25,15 @@ const List: React.FC = observer(() => {
   const search = searchParams.get("search") ?? ""
   const category = searchParams.get("category")
   const categoryId = category ? Number(category) : undefined
+
+  const authStore = useAuthStore()
+  const cartStore = useCartStore()
+
+  React.useEffect(() => {
+    if (authStore.jwt) {
+      cartStore.setJwt(authStore.jwt)
+    }
+  }, [authStore.jwt, cartStore])
 
   React.useEffect(() => {
     store.setSearch(search)
@@ -86,7 +97,11 @@ const List: React.FC = observer(() => {
         endMessage={productsMessage}
       >
         {store.products.map((product) => (
-          <ProductCard product={product} key={product.id} />
+          <ProductCard
+            product={product}
+            key={product.id}
+            cartStore={cartStore}
+          />
         ))}
       </InfiniteScroll>
     </section>
