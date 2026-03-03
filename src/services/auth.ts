@@ -27,8 +27,8 @@ export async function register(registerData: RegisterData) {
 export async function getProfile(jwt: string) {
   const response = await apiClient.get("/users/me", {
     headers: {
-      Authorization: `Bearer ${jwt}`
-    }
+      Authorization: `Bearer ${jwt}`,
+    },
   })
 
   return response

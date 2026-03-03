@@ -4,6 +4,7 @@ import { Link } from "react-router"
 import { ROUTES } from "constants/routes"
 import { Handbag, UserRound } from "lucide-react"
 import { observer } from "mobx-react-lite"
+import { useAuthStore } from "providers/AuthProvider"
 
 import Logo from "components/ui/Logo"
 import Menu from "components/ui/Menu"
@@ -11,7 +12,6 @@ import ThemeSwitcher from "components/ui/ThemeSwitcher"
 
 import s from "./Header.module.scss"
 import { HEADER_ITEMS } from "./header.data"
-import { useAuthStore } from "providers/AuthProvider"
 
 const Header: React.FC = observer(() => {
   const authStore = useAuthStore()
