@@ -6,17 +6,24 @@ import type { IProductInCart } from "shared/interface/cart.interface"
 import type { ILocalStore } from "shared/interface/localStore.interface"
 import MobxMutation from "store/globals/mobxMutation"
 import MobxQuery from "store/globals/mobxQuery"
+import type { RootStore } from "store/globals/root"
 
 type PrivateFields = "_cartQuery" | "_addMutation" | "_removeMutation"
 
 class CartStore implements ILocalStore {
-  private jwt: string | null
+  private _rootStore: RootStore
 
   private _cartQuery = new MobxQuery(
     () => ({
       queryKey: ["cart", "list"],
-      queryFn: () => getCart(this.jwt ?? ""),
-      enabled: !!this.jwt,
+      queryFn: () => {
+        // const token = this._rootStore.authStore.jwt ?? ""
+
+        const token = ""
+        return getCart(token)
+      },
+      // enabled: !!this._rootStore.authStore.jwt,
+      enabled: false,
     }),
     queryClient
   )
@@ -24,9 +31,13 @@ class CartStore implements ILocalStore {
   private _addMutation = new MobxMutation(
     () => ({
       mutationKey: ["cart", "add"],
-      mutationFn: (variables: { productId: number; quantity?: number }) =>
-        addToCart(this.jwt ?? "", variables.productId, variables.quantity),
-      enabled: !!this.jwt,
+      mutationFn: (variables: { productId: number; quantity?: number }) => {
+        // const token = this._rootStore.authStore.jwt ?? ""
+
+        const token = ""
+
+        return addToCart(token, variables.productId, variables.quantity)
+      },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
       },
@@ -37,9 +48,13 @@ class CartStore implements ILocalStore {
   private _removeMutation = new MobxMutation(
     () => ({
       mutationKey: ["cart", "remove"],
-      mutationFn: (variables: { productId: number; quantity?: number }) =>
-        removeFromCart(this.jwt ?? "", variables.productId, variables.quantity),
-      enabled: !!this.jwt,
+      mutationFn: (variables: { productId: number; quantity?: number }) => {
+        // const token = this._rootStore.authStore.jwt ?? ""
+
+        const token = ""
+
+        return removeFromCart(token, variables.productId, variables.quantity)
+      },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
       },
@@ -47,9 +62,7 @@ class CartStore implements ILocalStore {
     queryClient
   )
 
-  constructor(jwt: string | null) {
-    this.jwt = jwt
-
+  constructor(rootStore: RootStore) {
     makeObservable<CartStore, PrivateFields>(this, {
       _cartQuery: observable.ref,
       _addMutation: observable.ref,
@@ -62,8 +75,9 @@ class CartStore implements ILocalStore {
       add: action,
       remove: action,
       refetch: action,
-      setJwt: action,
     })
+
+    this._rootStore = rootStore
   }
 
   get cart(): IProductInCart[] {
@@ -80,11 +94,6 @@ class CartStore implements ILocalStore {
 
   get error(): AxiosError | null {
     return (this._cartQuery.result.error as AxiosError) ?? null
-  }
-
-  setJwt(jwt: string | null) {
-    this.jwt = jwt
-    this._cartQuery.result.refetch()
   }
 
   add(productId: number, quantity = 1) {

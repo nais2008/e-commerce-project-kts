@@ -2,9 +2,9 @@ import React from "react"
 import { Link } from "react-router"
 
 import { ROUTES } from "constants/routes"
+import { useAuthStore } from "hooks/globalStores"
 import { Handbag, UserRound } from "lucide-react"
 import { observer } from "mobx-react-lite"
-import { useAuthStore } from "providers/AuthProvider"
 
 import Logo from "components/ui/Logo"
 import Menu from "components/ui/Menu"

@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router"
 import { toast } from "react-toastify"
 
 import { ROUTES } from "constants/routes"
+import { useAuthStore } from "hooks/globalStores"
 import { observer } from "mobx-react-lite"
-import { useAuthStore } from "providers/AuthProvider"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Form from "components/layout/Form"

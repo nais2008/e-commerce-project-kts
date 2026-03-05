@@ -2,10 +2,9 @@ import React from "react"
 import Skeleton from "react-loading-skeleton"
 import { useSearchParams } from "react-router"
 
+import { useCategoriesStore } from "hooks/globalStores"
 import { useDebounce } from "hooks/useDebounce"
-import { useLocalStore } from "hooks/useLocalStore"
 import { observer } from "mobx-react-lite"
-import CategoriesStore from "store/CategoriesStore"
 
 import DropDown from "components/ui/DropDown"
 import Input from "components/ui/Input"
@@ -14,7 +13,7 @@ import s from "./Filters.module.scss"
 
 const Filters: React.FC = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const categoriesStore = useLocalStore(() => new CategoriesStore())
+  const categoriesStore = useCategoriesStore()
 
   const [inputValue, setInputValue] = React.useState(
     searchParams.get("search") ?? ""
@@ -22,10 +21,6 @@ const Filters: React.FC = observer(() => {
   const debouncedInput = useDebounce(inputValue)
 
   const selectedCategory = searchParams.get("category") ?? "all"
-
-  React.useEffect(() => {
-    categoriesStore.refetch()
-  }, [categoriesStore])
 
   React.useEffect(() => {
     const urlSearch = searchParams.get("search") ?? ""
@@ -68,7 +63,7 @@ const Filters: React.FC = observer(() => {
         onChange={setInputValue}
       />
       {categoriesStore.isLoading ? (
-        <Skeleton width={150} />
+        <Skeleton width={140} height={45} />
       ) : (
         <DropDown
           options={categoryOptions}

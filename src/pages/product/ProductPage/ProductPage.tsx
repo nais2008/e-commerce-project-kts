@@ -1,7 +1,6 @@
 import React from "react"
 import { Link, useNavigate, useParams } from "react-router"
 
-import { ROUTES } from "constants/routes"
 import { useLocalStore } from "hooks/useLocalStore"
 import { ChevronLeft } from "lucide-react"
 import { observer } from "mobx-react-lite"
@@ -29,10 +28,6 @@ const ProductPage: React.FC = observer(() => {
       store.setId(id)
     }
   }, [id, store])
-
-  React.useEffect(() => {
-    store.onNotFound = () => navigate(ROUTES.notFound.create())
-  }, [store.error, navigate, store])
 
   const handleBack = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()

@@ -1,5 +1,5 @@
 import { queryClient } from "api/reactQuery"
-import { action, computed, makeObservable, observable, reaction } from "mobx"
+import { action, computed, makeObservable, observable } from "mobx"
 import { getProductById } from "services/products"
 import type { ILocalStore } from "shared/interface/localStore.interface"
 import MobxQuery from "store/globals/mobxQuery"
@@ -8,7 +8,6 @@ type PrivateField = "_productQuery"
 
 class ProductStore implements ILocalStore {
   id = ""
-  onNotFound = () => {}
 
   private _productQuery = new MobxQuery(
     () => ({
@@ -51,18 +50,7 @@ class ProductStore implements ILocalStore {
     return this._productQuery.result.data?.data
   }
 
-  private _notFoundReaction = reaction(
-    () => this.error,
-    (err) => {
-      if (err?.message === "Not Found") {
-        this.onNotFound()
-      }
-    }
-  )
-
-  destroy(): void {
-    this._notFoundReaction()
-  }
+  destroy(): void {}
 }
 
 export default ProductStore

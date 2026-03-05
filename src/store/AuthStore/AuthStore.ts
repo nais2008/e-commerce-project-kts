@@ -44,7 +44,7 @@ class AuthStore implements ILocalStore {
 
   private _userQuery = new MobxQuery(
     () => ({
-      queryKey: ["me", this._jwt],
+      queryKey: ["auth", "me", this._jwt],
       queryFn: () => getProfile(this._jwt ?? ""),
       enabled: !!this._jwt,
     }),
@@ -90,7 +90,7 @@ class AuthStore implements ILocalStore {
   logout() {
     localStorage.removeItem("jwt")
     this._jwt = null
-    queryClient.invalidateQueries()
+    queryClient.invalidateQueries({ queryKey: ["me"] })
   }
 
   get isAuthenticated(): boolean {

@@ -70,7 +70,11 @@ const List: React.FC<Props> = observer(({ categoryId }) => {
           </Button>
         </>
       )}
-      <ListItems className={s.list__items} items={store.products} />
+      <ListItems
+        className={s.list__items}
+        items={store.products}
+        type="products"
+      />
     </section>
   )
 })

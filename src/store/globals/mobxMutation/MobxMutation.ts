@@ -62,13 +62,6 @@ class MobxMutation<
     return this.mutationObserver.mutate(variables, options)
   }
 
-  mutateAsync(
-    variables: TVariables,
-    options?: MutateOptions<TData, TError, TVariables, TContext>
-  ) {
-    return this.mutationObserver.mutate(variables, options)
-  }
-
   private unsubscribe = () => {}
   startTracking() {
     const unsubscribeReaction = reaction(
@@ -80,14 +73,17 @@ class MobxMutation<
     const unsubscribeObserver = this.mutationObserver.subscribe(() => {
       this.atom.reportChanged()
     })
+
     this.unsubscribe = () => {
       unsubscribeReaction()
       unsubscribeObserver()
     }
   }
+
   stopTracking() {
     this.unsubscribe()
   }
+
   private get defaultMutationOptions() {
     return this.queryClient.defaultMutationOptions(this.getOptions())
   }

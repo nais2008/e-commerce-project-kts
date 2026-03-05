@@ -5,6 +5,7 @@
   display: flex;
   gap: $spacing-12;
   width: 100%;
+  align-items: center;
 
   @include mixins.media-max-width($breakpoint-s) {
     flex-direction: column;

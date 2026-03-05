@@ -1,6 +1,7 @@
 import React from "react"
 
-import { AuthStoreContextProvider } from "./AuthProvider"
+import { RootStoreProvider } from "store/globals/root"
+
 import { CartStoreProvider } from "./CartProvider"
 import ReactQueryProvider from "./ReactQueryProvider"
 import { ThemeProvider } from "./ThemeProvider"
@@ -13,9 +14,9 @@ const HeadProvider: React.FC<HeadProviderProps> = ({ children }) => {
   return (
     <ReactQueryProvider>
       <ThemeProvider>
-        <AuthStoreContextProvider>
-          <CartStoreProvider>{children}</CartStoreProvider>
-        </AuthStoreContextProvider>
+        <CartStoreProvider>
+          <RootStoreProvider>{children}</RootStoreProvider>
+        </CartStoreProvider>
       </ThemeProvider>
     </ReactQueryProvider>
   )
