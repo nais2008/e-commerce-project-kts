@@ -8,61 +8,59 @@ import MobxMutation from "store/globals/mobxMutation"
 import MobxQuery from "store/globals/mobxQuery"
 import type { RootStore } from "store/globals/root"
 
+import { calculateDiscountedPrice } from "utils/calculateDiscountedPrice"
+
 type PrivateFields = "_cartQuery" | "_addMutation" | "_removeMutation"
 
 class CartStore implements ILocalStore {
   private _rootStore: RootStore
 
-  private _cartQuery = new MobxQuery(
-    () => ({
-      queryKey: ["cart", "list"],
-      queryFn: () => {
-        // const token = this._rootStore.authStore.jwt ?? ""
-
-        const token = ""
-        return getCart(token)
-      },
-      // enabled: !!this._rootStore.authStore.jwt,
-      enabled: false,
-    }),
-    queryClient
-  )
-
-  private _addMutation = new MobxMutation(
-    () => ({
-      mutationKey: ["cart", "add"],
-      mutationFn: (variables: { productId: number; quantity?: number }) => {
-        // const token = this._rootStore.authStore.jwt ?? ""
-
-        const token = ""
-
-        return addToCart(token, variables.productId, variables.quantity)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
-      },
-    }),
-    queryClient
-  )
-
-  private _removeMutation = new MobxMutation(
-    () => ({
-      mutationKey: ["cart", "remove"],
-      mutationFn: (variables: { productId: number; quantity?: number }) => {
-        // const token = this._rootStore.authStore.jwt ?? ""
-
-        const token = ""
-
-        return removeFromCart(token, variables.productId, variables.quantity)
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
-      },
-    }),
-    queryClient
-  )
+  private _cartQuery
+  private _addMutation
+  private _removeMutation
 
   constructor(rootStore: RootStore) {
+    this._rootStore = rootStore
+
+    this._cartQuery = new MobxQuery(
+      () => ({
+        queryKey: ["cart", "list"],
+        queryFn: () => getCart(this._rootStore.authStore.jwt ?? ""),
+        enabled: !!this._rootStore.authStore.jwt,
+      }),
+      queryClient
+    )
+
+    this._addMutation = new MobxMutation(
+      () => ({
+        mutationKey: ["cart", "add"],
+        mutationFn: (variables: { productId: number; quantity?: number }) => {
+          const token = this._rootStore.authStore.jwt ?? ""
+
+          return addToCart(token, variables.productId, variables.quantity)
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
+        },
+      }),
+      queryClient
+    )
+
+    this._removeMutation = new MobxMutation(
+      () => ({
+        mutationKey: ["cart", "remove"],
+        mutationFn: (variables: { productId: number; quantity?: number }) => {
+          const token = this._rootStore.authStore.jwt ?? ""
+
+          return removeFromCart(token, variables.productId, variables.quantity)
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
+        },
+      }),
+      queryClient
+    )
+
     makeObservable<CartStore, PrivateFields>(this, {
       _cartQuery: observable.ref,
       _addMutation: observable.ref,
@@ -71,17 +69,42 @@ class CartStore implements ILocalStore {
       cart: computed,
       isLoading: computed,
       error: computed,
+      totalSum: computed,
+      totalItems: computed,
 
       add: action,
       remove: action,
       refetch: action,
     })
-
-    this._rootStore = rootStore
   }
 
   get cart(): IProductInCart[] {
-    return this._cartQuery.result.data?.data ?? []
+    return this._cartQuery.result.data ?? []
+  }
+
+  isProductInCart(productId: number) {
+    return this.cart.some((item) => item.product.id === productId)
+  }
+
+  getProductQuantity(productId: number): number {
+    const item = this.cart.find((item) => item.product.id === productId)
+    return item?.quantity ?? 0
+  }
+
+  get totalSum(): number {
+    const total = this.cart.reduce((sum, item) => {
+      const discountedPrice = calculateDiscountedPrice(
+        item.product.price,
+        item.product.discountPercent
+      )
+      return sum + discountedPrice * item.quantity
+    }, 0)
+
+    return +total.toFixed(2)
+  }
+
+  get totalItems(): number {
+    return this.cart.reduce((sum, item) => sum + item.quantity, 0)
   }
 
   get isLoading() {
@@ -108,7 +131,11 @@ class CartStore implements ILocalStore {
     this._cartQuery.result.refetch()
   }
 
-  destroy() {}
+  destroy() {
+    this._cartQuery.stopTracking()
+    this._addMutation.stopTracking()
+    this._removeMutation.stopTracking()
+  }
 }
 
 export default CartStore

@@ -15,5 +15,6 @@ export const ENDPOINTS = {
   auth: {
     login: () => "/auth/local",
     register: () => "/auth/local/register",
+    profile: () => "/users/me",
   },
 }

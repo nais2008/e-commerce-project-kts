@@ -1,21 +1,15 @@
 import React from "react"
-import { Link } from "react-router"
 
-import { ROUTES } from "constants/routes"
-import { useAuthStore } from "hooks/globalStores"
-import { Handbag, UserRound } from "lucide-react"
-import { observer } from "mobx-react-lite"
-
+import CartBlock from "components/ui/CartBlock"
 import Logo from "components/ui/Logo"
 import Menu from "components/ui/Menu"
 import ThemeSwitcher from "components/ui/ThemeSwitcher"
+import UserBlock from "components/ui/UserBlock"
 
 import s from "./Header.module.scss"
 import { HEADER_ITEMS } from "./header.data"
 
-const Header: React.FC = observer(() => {
-  const authStore = useAuthStore()
-
+const Header: React.FC = () => {
   return (
     <header className={s.header}>
       <div className={s.header__container}>
@@ -23,20 +17,12 @@ const Header: React.FC = observer(() => {
         <Menu className={s.header__navigation} items={HEADER_ITEMS} />
         <div className={s.header__right}>
           <ThemeSwitcher />
-          {authStore.isAuthenticated ? (
-            <div className={s.header__icons}>
-              <Handbag size={30} />
-              <UserRound size={30} />
-            </div>
-          ) : (
-            <Link to={ROUTES.login.create()} className={s.header__btnLogin}>
-              Login
-            </Link>
-          )}
+          <CartBlock />
+          <UserBlock />
         </div>
       </div>
     </header>
   )
-})
+}
 
 export default Header

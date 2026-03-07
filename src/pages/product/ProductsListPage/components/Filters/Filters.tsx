@@ -61,6 +61,7 @@ const Filters: React.FC = observer(() => {
         placeholder="Search products..."
         value={inputValue}
         onChange={setInputValue}
+        className={s.filters__input}
       />
       {categoriesStore.isLoading ? (
         <Skeleton width={140} height={45} />

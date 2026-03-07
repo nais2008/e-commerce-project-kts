@@ -34,16 +34,6 @@
       flex-direction: column;
     }
   }
-  &__btnLogin {
-    padding: $spacing-12;
-    text-decoration: underline;
-    background-color: var(--back-color);
-    transition: background-color 0.1s;
-
-    &:active {
-      background-color: var(--back-color-second);
-    }
-  }
   &__icons {
     display: flex;
     align-items: center;

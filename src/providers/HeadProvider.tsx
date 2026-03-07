@@ -2,7 +2,6 @@ import React from "react"
 
 import { RootStoreProvider } from "store/globals/root"
 
-import { CartStoreProvider } from "./CartProvider"
 import ReactQueryProvider from "./ReactQueryProvider"
 import { ThemeProvider } from "./ThemeProvider"
 
@@ -14,9 +13,7 @@ const HeadProvider: React.FC<HeadProviderProps> = ({ children }) => {
   return (
     <ReactQueryProvider>
       <ThemeProvider>
-        <CartStoreProvider>
-          <RootStoreProvider>{children}</RootStoreProvider>
-        </CartStoreProvider>
+        <RootStoreProvider>{children}</RootStoreProvider>
       </ThemeProvider>
     </ReactQueryProvider>
   )

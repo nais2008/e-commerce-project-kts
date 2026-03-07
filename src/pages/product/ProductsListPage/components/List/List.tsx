@@ -3,10 +3,9 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import Skeleton from "react-loading-skeleton"
 import { useSearchParams } from "react-router"
 
-import { useAuthStore } from "hooks/globalStores"
+import { useAuthStore, useCartStore } from "hooks/globalStores"
 import { useLocalStore } from "hooks/useLocalStore"
 import { observer } from "mobx-react-lite"
-import { useCartStore } from "providers/CartProvider"
 import ProductListStore from "store/ProductListStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
@@ -28,12 +27,6 @@ const List: React.FC = observer(() => {
 
   const authStore = useAuthStore()
   const cartStore = useCartStore()
-
-  React.useEffect(() => {
-    if (authStore.jwt) {
-      // cartStore.setJwt(authStore.jwt)
-    }
-  }, [authStore.jwt, cartStore])
 
   React.useEffect(() => {
     store.setSearch(search)
@@ -97,7 +90,13 @@ const List: React.FC = observer(() => {
         endMessage={productsMessage}
       >
         {store.products.map((product) => (
-          <ProductCard product={product} key={product.id} />
+          <ProductCard
+            product={product}
+            key={product.id}
+            isAuth={authStore.isAuthenticated}
+            onAddToCart={() => cartStore.add(product.id)}
+            inCart={cartStore.isProductInCart(product.id)}
+          />
         ))}
       </InfiniteScroll>
     </section>

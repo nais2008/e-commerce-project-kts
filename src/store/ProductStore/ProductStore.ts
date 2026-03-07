@@ -50,7 +50,9 @@ class ProductStore implements ILocalStore {
     return this._productQuery.result.data?.data
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this._productQuery.stopTracking()
+  }
 }
 
 export default ProductStore

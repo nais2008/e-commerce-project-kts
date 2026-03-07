@@ -27,4 +27,12 @@ export const ROUTES = {
     mask: "/register",
     create: () => "/register",
   },
+  profile: {
+    mask: "/me",
+    create: () => "/me",
+  },
+  cart: {
+    mask: "/cart",
+    create: () => "/cart",
+  },
 }

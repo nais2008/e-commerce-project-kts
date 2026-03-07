@@ -21,7 +21,6 @@ const ListItems: React.FC<Props> = ({ className, items, type }) => {
         } else {
           return <CategoryCard item={item as ICategory} />
         }
-        return null
       })}
     </div>
   )

@@ -4,7 +4,7 @@ import type { ApiResponse } from "shared/interface/apiResponse.interface"
 import type { IProductInCart } from "shared/interface/cart.interface"
 
 export async function getCart(jwt: string) {
-  const { data } = await apiClient.get<ApiResponse<IProductInCart[]>>(
+  const { data } = await apiClient.get<IProductInCart[]>(
     ENDPOINTS.cart.list(),
     {
       headers: {
