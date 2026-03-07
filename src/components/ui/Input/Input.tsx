@@ -25,14 +25,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     )
 
     return (
-      <div className={s.input__wrapper}>
+      <div className={cn(s.input__wrapper, className)}>
         <input
           ref={ref}
           {...props}
           onChange={handlerChange}
           value={value}
-          className={cn(s.input__field, className)}
-          type="text"
+          className={cn(s.input__field)}
         />
         {afterSlot && <div className={s.input__afterSlot}>{afterSlot}</div>}
       </div>

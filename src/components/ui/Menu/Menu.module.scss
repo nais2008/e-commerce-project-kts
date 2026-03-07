@@ -81,9 +81,6 @@
       color: var(--accent-color-dark);
       font-weight: 600;
     }
-    &_red {
-      color: tomato;
-    }
 
     @include mixins.media-max-width($breakpoint-l) {
       &::after {

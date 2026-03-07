@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useNavigate } from "react-router"
 
 import { ROUTES } from "constants/routes"
@@ -10,17 +10,41 @@ import DiscountPrice from "../DiscountPrice"
 
 type Props = {
   product: IProductToList
+  isAuth?: boolean
+  onAddToCart?: () => void
+  inCart?: boolean
 }
 
-const ProductCard: React.FC<Props> = ({ product }) => {
+const ProductCard: React.FC<Props> = ({
+  product,
+  isAuth,
+  onAddToCart,
+  inCart,
+}) => {
   const navigate = useNavigate()
+
+  const handleCardClick = () => {
+    navigate(ROUTES.product.create(product.documentId))
+  }
+
+  const handleButtonClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+
+      if (typeof onAddToCart === "undefined") return
+
+      onAddToCart()
+      console.log("Добавили в корзину:", product.id)
+    },
+    [onAddToCart, product.id]
+  )
 
   return (
     <Card
       key={product.id}
       title={product.title}
       subtitle={product.description}
-      onClick={() => navigate(ROUTES.product.create(product.documentId))}
+      onClick={handleCardClick}
       contentSlot={
         <DiscountPrice
           price={product.price}
@@ -29,9 +53,15 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       }
       image={product.images[0].formats.small.url}
       captionSlot={product.productCategory.title}
-      actionSlot={<Button>Add to card</Button>}
+      actionSlot={
+        isAuth && (
+          <Button disabled={inCart} onClick={handleButtonClick}>
+            {inCart ? "In cart" : "Add to cart"}
+          </Button>
+        )
+      }
     />
   )
 }
 
-export default ProductCard
+export default React.memo(ProductCard)

@@ -1,8 +1,9 @@
 import React from "react"
 
-import { useQuery } from "@tanstack/react-query"
 import classNames from "classnames"
-import { getProductsByCategory } from "services/products"
+import { useLocalStore } from "hooks/useLocalStore"
+import { observer } from "mobx-react-lite"
+import RelatedProductsStore from "store/RelatedProductsStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
@@ -16,47 +17,66 @@ type Props = {
   categoryId: number
 }
 
-const List: React.FC<Props> = ({ categoryId }) => {
-  const { isPending, error, data, refetch } = useQuery({
-    queryKey: ["productsByCategory"],
-    queryFn: () => getProductsByCategory(categoryId, 3),
-    refetchOnWindowFocus: true,
-  })
+const List: React.FC<Props> = observer(({ categoryId }) => {
+  const store = useLocalStore(() => new RelatedProductsStore())
 
-  if (isPending)
+  React.useEffect(() => {
+    store.setCategoryId(categoryId)
+  }, [categoryId, store])
+
+  if (store.isLoading)
     return (
       <section className={s.list}>
         <Heading view="subtitle" tag="h2" className={s.list__title}>
           Related Items
         </Heading>
         <div className={s.list__items}>
-          {[...Array(9)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <CardSkeleton key={i} />
           ))}
         </div>
       </section>
     )
 
-  if (error)
+  if (store.error)
     return (
       <div className={classNames(s.list)}>
-        <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={s.retryButton}>
+        <ErrorMessage
+          errorMess={`An error has occurred: ${store.error.message}`}
+        />
+        <Button onClick={() => store.refetch()} className={s.retryButton}>
           Try Again
         </Button>
       </div>
     )
-
-  const dataArr = data?.data
 
   return (
     <section className={s.list}>
       <Heading view="subtitle" tag="h2" className={s.list__title}>
         Related Items
       </Heading>
-      <ListItems className={s.list__items} items={dataArr} />
+      {store.isLoading && (
+        <div className={s.list__items}>
+          {[...Array(3)].map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+      {store.error && (
+        <>
+          <ErrorMessage errorMess={`An error has occurred: ${store.error}`} />
+          <Button onClick={() => store.refetch()} className={s.retryButton}>
+            Try Again
+          </Button>
+        </>
+      )}
+      <ListItems
+        className={s.list__items}
+        items={store.products}
+        type="products"
+      />
     </section>
   )
-}
+})
 
 export default List

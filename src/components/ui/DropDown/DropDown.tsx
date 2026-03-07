@@ -15,9 +15,17 @@ type DropDownProps = {
   options?: DropdownOption[]
   value: string
   onChange: (value: string) => void
+  className?: string
+  isBackSecond?: boolean
 }
 
-const DropDown: React.FC<DropDownProps> = ({ options, value, onChange }) => {
+const DropDown: React.FC<DropDownProps> = ({
+  options,
+  value,
+  onChange,
+  className,
+  isBackSecond,
+}) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const selectRef = React.useRef<HTMLDivElement | null>(null)
@@ -58,13 +66,16 @@ const DropDown: React.FC<DropDownProps> = ({ options, value, onChange }) => {
   )
 
   return (
-    <div className={s.dropDown} ref={selectRef}>
+    <div className={classNames(s.dropDown, className)} ref={selectRef}>
       <div
-        className={s.dropDown__btn}
+        className={classNames(
+          s.dropDown__btn,
+          isBackSecond && s.dropDown__btn_second
+        )}
         onClick={() => setIsOpen(!isOpen)}
         tabIndex={0}
       >
-        {selectedOption?.label}
+        <Heading>{selectedOption?.label}</Heading>
         <Heading tag="span">{isOpen ? <ChevronUp /> : <ChevronDown />}</Heading>
       </div>
 

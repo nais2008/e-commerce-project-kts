@@ -22,6 +22,7 @@ const ThemeSwitcher: React.FC = () => {
       options={themeOptions}
       value={theme}
       onChange={handleThemeChange}
+      isBackSecond
     />
   )
 }

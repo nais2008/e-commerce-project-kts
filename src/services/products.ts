@@ -9,18 +9,28 @@ import type {
 
 const PAGE_SIZE = 9
 
-export async function getProducts(page: number, pageSize: number = PAGE_SIZE) {
+export async function getProducts(
+  page: number,
+  pageSize: number = PAGE_SIZE,
+  search: string = "",
+  categoryId?: number
+) {
   const queryParams = {
     populate: ["images", "productCategory"],
     pagination: {
       page: page,
       pageSize: pageSize,
     },
+    filters: {
+      ...(search ? { title: { $containsi: search } } : {}),
+      ...(categoryId ? { productCategory: { id: { $eq: categoryId } } } : {}),
+    },
   }
   const queryString = qs.stringify(queryParams, {
     encode: false,
     indices: false,
     arrayFormat: "repeat",
+    skipNulls: true,
   })
 
   const { data } = await apiClient.get<ApiResponse<IProductToList[]>>(

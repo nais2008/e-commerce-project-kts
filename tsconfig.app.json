@@ -36,7 +36,7 @@
       "hooks/*": ["./src/hooks/*"],
       "shared/*": ["./src/shared/*"],
       "store/*": ["./src/store/*"],
-      "services/*": ["./src/services/"]
+      "services/*": ["./src/services/*"]
     }
   },
   "include": ["src"]

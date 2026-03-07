@@ -14,10 +14,21 @@
 
     * {
       width: 100%;
+      text-align: left;
     }
   }
   &__btns {
     display: flex;
     gap: $spacing-40;
+  }
+
+  &__cartControls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-12;
+  }
+  &__cartControlBtn {
+    padding: $spacing-16;
+    padding-bottom: calc($spacing-16 - 5px);
   }
 }

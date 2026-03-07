@@ -19,4 +19,20 @@ export const ROUTES = {
     mask: "/not-found",
     create: () => "/not-found",
   },
+  login: {
+    mask: "/login",
+    create: () => "/login",
+  },
+  register: {
+    mask: "/register",
+    create: () => "/register",
+  },
+  profile: {
+    mask: "/me",
+    create: () => "/me",
+  },
+  cart: {
+    mask: "/cart",
+    create: () => "/cart",
+  },
 }

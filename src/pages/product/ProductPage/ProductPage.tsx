@@ -1,10 +1,10 @@
 import React from "react"
 import { Link, useNavigate, useParams } from "react-router"
 
-import { useQuery } from "@tanstack/react-query"
-import { ROUTES } from "constants/routes"
+import { useLocalStore } from "hooks/useLocalStore"
 import { ChevronLeft } from "lucide-react"
-import { getProductById } from "services/products"
+import { observer } from "mobx-react-lite"
+import ProductStore from "store/ProductStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
 import Button from "components/ui/Button"
@@ -16,77 +16,52 @@ import s from "./ProductPage.module.scss"
 import InfoProduct from "./components/InfoProduct"
 import List from "./components/List"
 
-const ProductPage: React.FC = () => {
+const ProductPage: React.FC = observer(() => {
   const { id } = useParams()
 
   const navigate = useNavigate()
 
-  const {
-    isPending,
-    error,
-    data: rawData,
-    refetch,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById(id ?? ""),
-  })
+  const store = useLocalStore(() => new ProductStore())
 
-  if (isPending)
-    return (
-      <main className={s.product__container}>
-        <Link
-          to="#"
-          className={s.product__linkPrev}
-          onClick={(e) => {
-            e.preventDefault()
-            navigate(-1)
-          }}
-        >
-          <ChevronLeft size={32} />
-          <Heading view="desc">Back</Heading>
-        </Link>
-        <ProductDetailSkeleton />
-      </main>
-    )
-
-  if (error) {
-    if (error.message === "Not Found") {
-      navigate(ROUTES.notFound.create(), { replace: true })
-      return null
+  React.useEffect(() => {
+    if (id) {
+      store.setId(id)
     }
+  }, [id, store])
 
-    return (
-      <main className={s.product__container}>
-        <ErrorMessage errorMess={"An error has occurred: " + error.message} />
-        <Button onClick={() => refetch()} className={s.retryButton}>
-          Try Again
-        </Button>
-      </main>
-    )
+  const handleBack = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    navigate(-1)
   }
-
-  const data = rawData.data
 
   return (
     <main className={s.product__container}>
-      <Link
-        to="#"
-        className={s.product__linkPrev}
-        onClick={(e) => {
-          e.preventDefault()
-          navigate(-1)
-        }}
-      >
+      <Link to="#" className={s.product__linkPrev} onClick={handleBack}>
         <ChevronLeft size={32} />
         <Heading view="desc">Back</Heading>
       </Link>
-      <div className={s.product__info}>
-        <ImageSlider images={data.images} />
-        <InfoProduct data={data} />
-      </div>
-      <List categoryId={data.productCategory.id} />
+      {store.isLoading && <ProductDetailSkeleton />}
+      {store.error && (
+        <>
+          <ErrorMessage
+            errorMess={`An error has occurred: ${store.error.message}`}
+          />
+          <Button onClick={() => store.refetch()} className={s.retryButton}>
+            Try Again
+          </Button>
+        </>
+      )}
+      {store.product && (
+        <>
+          <div className={s.product__info}>
+            <ImageSlider images={store.product.images} />
+            <InfoProduct data={store.product} />
+          </div>
+          <List categoryId={store.product.productCategory.id} />
+        </>
+      )}
     </main>
   )
-}
+})
 
 export default ProductPage

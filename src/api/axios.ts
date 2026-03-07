@@ -18,9 +18,12 @@ export const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiErrorResponse>) => {
-    const message =
-      error.response?.data?.error?.message || error.message || "Unknown error"
+    if (error.response?.status === 401) {
+      localStorage.removeItem("jwt")
+    }
 
-    return Promise.reject(new Error(message))
+    return Promise.reject(error)
   }
 )
+
+export default apiClient

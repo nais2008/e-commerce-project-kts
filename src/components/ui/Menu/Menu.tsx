@@ -10,7 +10,6 @@ import s from "./Menu.module.scss"
 type MenuItem = {
   name: string
   link: () => string
-  redText?: boolean
 }
 
 type MenuProps = {
@@ -63,7 +62,6 @@ const Menu: React.FC<MenuProps> = ({ items, className, icon = null }) => {
               key={item.name}
               className={classNames(s.menu__item, {
                 [s.menu__item_active]: isActive,
-                [s.menu__item_red]: item.redText,
               })}
               onClick={() => setIsOpen(false)}
             >
