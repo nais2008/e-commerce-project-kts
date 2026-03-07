@@ -1,5 +1,4 @@
 import React from "react"
-import Skeleton from "react-loading-skeleton"
 import { useNavigate } from "react-router"
 
 import classNames from "classnames"
@@ -29,17 +28,13 @@ const CartBlock: React.FC<Props> = observer(({ className }) => {
       <Handbag size={30} />
       {cartStore.error && <span className={s.cartBlock__countItems_empty} />}
       {authStore.isAuthenticated ? (
-        cartStore.isLoading ? (
-          <Skeleton
-            width={20}
-            height={20}
-            className={s.cartBlock__countItems}
-          />
-        ) : (
-          <Heading className={s.cartBlock__countItems}>
-            {cartStore.totalItems}
-          </Heading>
-        )
+        <>
+          {cartStore.totalItems > 0 && (
+            <Heading className={s.cartBlock__countItems}>
+              {cartStore.totalItems}
+            </Heading>
+          )}
+        </>
       ) : (
         <span className={s.cartBlock__countItems_empty} />
       )}

@@ -1,13 +1,13 @@
 import React from "react"
 
 import { useCartStore } from "hooks/globalStores"
-import { Minus, Plus } from "lucide-react"
 import { observer } from "mobx-react-lite"
 import type { IProduct } from "shared/interface/product.interface"
 
 import Button from "components/ui/Button"
 import DiscountPrice from "components/ui/DiscountPrice"
 import Heading from "components/ui/Heading"
+import QuantityButton from "components/ui/QuantityButton"
 
 import s from "./InfoProduct.module.scss"
 
@@ -38,31 +38,16 @@ const InfoProduct: React.FC<Props> = observer(({ data }) => {
       <div className={s.product__btns}>
         <Button>Buy Now</Button>
         {quantity === 0 ? (
-          <Button isPrimary onClick={() => cartStore.add(data.id)}>
+          <Button isPrimary onClick={() => cartStore.add(data.id, 1, data)}>
             Add to Cart
           </Button>
         ) : (
-          <div className={s.product__cartControls}>
-            <Button
-              isPrimary
-              className={s.product__cartControlBtn}
-              onClick={() => cartStore.remove(data.id)}
-            >
-              <Minus />
-            </Button>
-
-            <Heading weight="medium" tag="span" className={s.quantity}>
-              {quantity}
-            </Heading>
-
-            <Button
-              isPrimary
-              className={s.product__cartControlBtn}
-              onClick={() => cartStore.add(data.id)}
-            >
-              <Plus />
-            </Button>
-          </div>
+          <QuantityButton
+            isPrimary
+            quantity={quantity}
+            onAdd={() => cartStore.add(data.id, 1, data)}
+            onRemove={() => cartStore.remove(data.id)}
+          />
         )}
       </div>
     </section>

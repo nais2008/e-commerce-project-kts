@@ -127,7 +127,11 @@ class AuthStore implements ILocalStore {
       this._userQuery.result.error) as AxiosError | null
   }
 
-  destroy() {}
+  destroy() {
+    this._loginMutation.stopTracking()
+    this._registerMutation.stopTracking()
+    this._userQuery.stopTracking()
+  }
 }
 
 export default AuthStore

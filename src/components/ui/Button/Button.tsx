@@ -26,7 +26,9 @@ const Button: React.FC<ButtonProps> = ({
       disabled={loading || props.disabled}
     >
       {loading && <Loader size="s" className={s.btn__loader} />}
-      <Heading view="button">{children}</Heading>
+      <Heading className={s.btn__text} view="button">
+        {children}
+      </Heading>
     </button>
   )
 }

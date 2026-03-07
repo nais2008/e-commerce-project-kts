@@ -5,9 +5,11 @@ import HeadProvider from "providers/HeadProvider"
 
 import ProtectedRoute from "components/utils/ProtectedRoute"
 
+import CartPage from "pages/CartPage"
 import NotFound from "pages/NotFound"
 import WelcomePage from "pages/WelcomePage"
 import LoginPage from "pages/auth/LoginPage"
+import MePage from "pages/auth/MePage"
 import RegisterPage from "pages/auth/RegisterPage"
 import CategoriesList from "pages/categories/CategoriesList"
 import ProductPage from "pages/product/ProductPage"
@@ -46,6 +48,14 @@ export const routesConfig: RouteObject[] = [
           {
             path: ROUTES.categories.mask,
             element: <CategoriesList />,
+          },
+          {
+            path: ROUTES.cart.mask,
+            element: <CartPage />,
+          },
+          {
+            path: ROUTES.profile.mask,
+            element: <MePage />,
           },
         ],
       },

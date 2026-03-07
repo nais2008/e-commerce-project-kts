@@ -26,11 +26,11 @@ export async function register(registerData: RegisterData) {
 }
 
 export async function getProfile(jwt: string) {
-  const response = await apiClient.get<IUser>(ENDPOINTS.auth.profile(), {
+  const { data } = await apiClient.get<IUser>(ENDPOINTS.auth.profile(), {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
   })
 
-  return response
+  return data
 }

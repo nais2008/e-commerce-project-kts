@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router"
 import { useAuthStore, useCartStore } from "hooks/globalStores"
 import { useLocalStore } from "hooks/useLocalStore"
 import { observer } from "mobx-react-lite"
+import type { IProduct } from "shared/interface/product.interface"
 import ProductListStore from "store/ProductListStore"
 
 import ErrorMessage from "components/layout/ErrorMessage"
@@ -94,7 +95,9 @@ const List: React.FC = observer(() => {
             product={product}
             key={product.id}
             isAuth={authStore.isAuthenticated}
-            onAddToCart={() => cartStore.add(product.id)}
+            onAddToCart={() =>
+              cartStore.add(product.id, 1, product as IProduct)
+            }
             inCart={cartStore.isProductInCart(product.id)}
           />
         ))}

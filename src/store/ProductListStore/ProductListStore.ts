@@ -52,11 +52,13 @@ class ProductListStore implements ILocalStore {
       search: observable,
       pageSize: observable,
       categoryId: observable,
+
       products: computed,
       isLoading: computed,
       hasNextPage: computed,
       totalProducts: computed,
       error: computed,
+
       loadMore: action,
       setSearch: action,
       setCategoryId: action,
@@ -110,7 +112,9 @@ class ProductListStore implements ILocalStore {
     }
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this._productListQuery.stopTracking()
+  }
 }
 
 export default ProductListStore

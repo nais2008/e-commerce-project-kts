@@ -68,7 +68,9 @@ class RelatedProductsStore implements ILocalStore {
     return this._query.result.error as AxiosError | null
   }
 
-  destroy() {}
+  destroy() {
+    this._query.stopTracking()
+  }
 }
 
 export default RelatedProductsStore

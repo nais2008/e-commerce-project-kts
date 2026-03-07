@@ -4,6 +4,7 @@ import { action, computed, makeObservable, observable } from "mobx"
 import { addToCart, getCart, removeFromCart } from "services/cart"
 import type { IProductInCart } from "shared/interface/cart.interface"
 import type { ILocalStore } from "shared/interface/localStore.interface"
+import type { IProduct } from "shared/interface/product.interface"
 import MobxMutation from "store/globals/mobxMutation"
 import MobxQuery from "store/globals/mobxQuery"
 import type { RootStore } from "store/globals/root"
@@ -22,9 +23,11 @@ class CartStore implements ILocalStore {
   constructor(rootStore: RootStore) {
     this._rootStore = rootStore
 
+    const queryKey = ["cart", "list"]
+
     this._cartQuery = new MobxQuery(
       () => ({
-        queryKey: ["cart", "list"],
+        queryKey,
         queryFn: () => getCart(this._rootStore.authStore.jwt ?? ""),
         enabled: !!this._rootStore.authStore.jwt,
       }),
@@ -34,13 +37,51 @@ class CartStore implements ILocalStore {
     this._addMutation = new MobxMutation(
       () => ({
         mutationKey: ["cart", "add"],
-        mutationFn: (variables: { productId: number; quantity?: number }) => {
+        mutationFn: (variables: {
+          productId: number
+          quantity?: number
+          product?: IProduct
+        }) => {
           const token = this._rootStore.authStore.jwt ?? ""
 
           return addToCart(token, variables.productId, variables.quantity)
         },
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
+        onMutate: async (variables) => {
+          await queryClient.cancelQueries({ queryKey })
+
+          const previous = queryClient.getQueryData<IProductInCart[]>(queryKey)
+
+          if (previous) {
+            const newCart = [...previous]
+            const index = newCart.findIndex(
+              (item) => item.product.id === variables.productId
+            )
+
+            if (index !== -1) {
+              newCart[index] = {
+                ...newCart[index],
+                quantity: newCart[index].quantity + (variables.quantity ?? 1),
+              }
+            } else if (variables.product) {
+              newCart.push({
+                id: -Date.now(), // Временный ID
+                quantity: variables.quantity ?? 1,
+                product: variables.product,
+              })
+            }
+
+            queryClient.setQueryData(queryKey, newCart)
+          }
+
+          return { previous }
+        },
+        onError: (_, __, context) => {
+          if (context?.previous) {
+            queryClient.setQueryData(queryKey, context.previous)
+          }
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey })
         },
       }),
       queryClient
@@ -54,8 +95,39 @@ class CartStore implements ILocalStore {
 
           return removeFromCart(token, variables.productId, variables.quantity)
         },
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["cart", "list"] })
+        onMutate: async (variables) => {
+          await queryClient.cancelQueries({ queryKey })
+
+          const previous = queryClient.getQueryData<IProductInCart[]>(queryKey)
+
+          if (previous) {
+            let newCart = [...previous]
+            const index = newCart.findIndex(
+              (item) => item.product.id === variables.productId
+            )
+
+            if (index !== -1) {
+              const newQuantity =
+                newCart[index].quantity - (variables.quantity ?? 1)
+              if (newQuantity > 0) {
+                newCart[index] = { ...newCart[index], quantity: newQuantity }
+              } else {
+                newCart = newCart.filter((_, i) => i !== index)
+              }
+            }
+
+            queryClient.setQueryData(queryKey, newCart)
+          }
+
+          return { previous }
+        },
+        onError: (_, __, context) => {
+          if (context?.previous) {
+            queryClient.setQueryData(queryKey, context.previous)
+          }
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey })
         },
       }),
       queryClient
@@ -68,6 +140,8 @@ class CartStore implements ILocalStore {
 
       cart: computed,
       isLoading: computed,
+      isLoadingAdd: computed,
+      isLoadingRemove: computed,
       error: computed,
       totalSum: computed,
       totalItems: computed,
@@ -108,19 +182,23 @@ class CartStore implements ILocalStore {
   }
 
   get isLoading() {
-    return (
-      this._cartQuery.result.isPending ||
-      this._addMutation.result.isPending ||
-      this._removeMutation.result.isPending
-    )
+    return this._cartQuery.result.isPending
+  }
+
+  get isLoadingAdd() {
+    return this._addMutation.result.isPending
+  }
+
+  get isLoadingRemove() {
+    return this._removeMutation.result.isPending
   }
 
   get error(): AxiosError | null {
     return (this._cartQuery.result.error as AxiosError) ?? null
   }
 
-  add(productId: number, quantity = 1) {
-    return this._addMutation.mutate({ productId, quantity })
+  add(productId: number, quantity = 1, product?: IProduct) {
+    return this._addMutation.mutate({ productId, quantity, product })
   }
 
   remove(productId: number, quantity = 1) {
